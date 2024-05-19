@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "79589055990",
+    "project_id": "proyecto-mario-garcia",
+    "storage_bucket": "proyecto-mario-garcia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79589055990:android:de5c49955f5c3d58477bd7",
+        "android_client_info": {
+          "package_name": "com.paca.flutter_mario_garcia_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNKlwV73HVU_b0DvaOQqwkt3msBlc5H70"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
