@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_mario_garcia_app/models/lavador.dart';
 import 'package:flutter_mario_garcia_app/models/rol.dart';
 
 class RolService {

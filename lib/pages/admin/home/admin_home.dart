@@ -85,6 +85,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
               ),
               _listTile('Mi cuenta', 'update', Icons.person_outline),
               _listTile('Cuentas', 'admin/accounts/list', Icons.people_outline),
+              _listTile(
+                  'Lavadores', 'admin/lavadores/list', Icons.list_alt_outlined),
               _listTile('Compartir App', 'client/share', Icons.share),
               _listTile('Ayuda', 'client/help', Icons.help),
               ListTile(

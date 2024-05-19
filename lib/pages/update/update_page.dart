@@ -86,16 +86,28 @@ class _UpdatePageState extends State<UpdatePage> {
 
   Widget _imageUser() {
     final size = MediaQuery.of(context).size.height;
-    return Container(
-      margin: const EdgeInsets.all(30),
-      child: GestureDetector(
-        onTap: () {},
-        child: CircleAvatar(
-          backgroundImage: const AssetImage('assets/img/profile.jpg'),
-          radius: 50,
-          backgroundColor: Colors.grey[200],
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: () {},
+          child: Container(
+            width: 100,
+            height: 100,
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: const Image(
+                image: AssetImage('assets/img/profile.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
         ),
-      ),
+        const SizedBox(width: 1),
+      ],
     );
   }
 

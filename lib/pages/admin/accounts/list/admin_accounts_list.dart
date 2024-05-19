@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mario_garcia_app/models/user.dart';
+import 'package:flutter_mario_garcia_app/pages/admin/accounts/create/admin_accounts_create.dart';
 import 'package:flutter_mario_garcia_app/services/user_service.dart';
 import 'package:flutter_mario_garcia_app/widgets/custom_text.dart';
 
@@ -42,8 +43,19 @@ class _AdminAccountsListState extends State<AdminAccountsList> {
           title: const Text('Cuentas'),
           actions: [
             IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, 'admin/accounts/create');
+                onPressed: () async {
+                  final res = await Navigator.push<bool>(
+                    context,
+                    MaterialPageRoute<bool>(
+                      builder: (BuildContext context) =>
+                          const AdminAccountsCreate(),
+                    ),
+                  );
+                  if (res != null) {
+                    if (res) {
+                      refresh();
+                    }
+                  }
                 },
                 icon: const Icon(Icons.add)),
           ],

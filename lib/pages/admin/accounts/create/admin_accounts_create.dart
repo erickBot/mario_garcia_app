@@ -133,13 +133,14 @@ class _AdminAccountsCreateState extends State<AdminAccountsCreate> {
         await _userService.create(client);
 
         Fluttertoast.showToast(msg: 'Usuario fue creado con éxito');
-        Navigator.pop(context);
+        Navigator.pop(context, true);
       } else {
         Fluttertoast.showToast(msg: 'Error al crear cuenta');
       }
     } catch (error) {
       //_progressDialog?.close();
       Fluttertoast.showToast(msg: 'Ocurrio un error!');
+      return;
     }
   }
 
