@@ -9,7 +9,6 @@ import 'package:flutter_mario_garcia_app/pages/assistent/home/assistent_home_pag
 import 'package:flutter_mario_garcia_app/pages/login/login_page.dart';
 import 'package:flutter_mario_garcia_app/pages/operator/home/operator_home_page.dart';
 import 'package:flutter_mario_garcia_app/pages/operator/register/create/operator_register_create_page.dart';
-import 'package:flutter_mario_garcia_app/pages/operator/register/update/operator_register_update_page.dart';
 import 'package:flutter_mario_garcia_app/pages/secretary/home/secretary_home_page.dart';
 import 'package:flutter_mario_garcia_app/pages/update/update_page.dart';
 import 'package:flutter_mario_garcia_app/providers/user_provider.dart';
@@ -42,19 +41,23 @@ class _MyAppState extends State<MyApp> {
         title: 'Mario Garcia',
         initialRoute: 'login',
         routes: {
-          'login': (_) => LoginPage(),
-          'update': (_) => UpdatePage(),
-          'admin/home': (_) => AdminHomePage(),
-          'admin/accounts/list': (_) => AdminAccountsList(),
-          'admin/accounts/create': (_) => AdminAccountsCreate(),
-          'admin/lavadores/list': (_) => AdminLavadoresListPage(),
-          'admin/lavadores/create': (_) => AdminLavadoresCreate(),
-          'operator/home': (_) => OperatorHomePage(),
-          'operator/register/create': (_) => OperatorRegisterCreatePage(),
-          'secretary/home': (_) => SecretaryHomePage(),
-          'assistent/home': (_) => AssistentHomePage(),
+          'login': (_) => const LoginPage(),
+          'update': (_) => const UpdatePage(),
+          'admin/home': (_) => const AdminHomePage(),
+          'admin/accounts/list': (_) => const AdminAccountsList(),
+          'admin/accounts/create': (_) => const AdminAccountsCreate(),
+          'admin/lavadores/list': (_) => const AdminLavadoresListPage(),
+          'admin/lavadores/create': (_) => const AdminLavadoresCreate(),
+          'operator/home': (_) => const OperatorHomePage(),
+          'operator/register/create': (_) => const OperatorRegisterCreatePage(),
+          'secretary/home': (_) => const SecretaryHomePage(),
+          'assistent/home': (_) => const AssistentHomePage(),
         },
-        theme: ThemeData(appBarTheme: AppBarTheme(elevation: 0)),
+        theme: ThemeData(
+            appBarTheme: const AppBarTheme(
+          titleTextStyle: TextStyle(fontSize: 16),
+          elevation: 0,
+        )),
       ),
     );
   }

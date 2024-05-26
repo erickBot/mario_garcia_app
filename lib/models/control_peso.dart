@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:flutter_mario_garcia_app/models/lavador.dart';
+
 ControlPeso controlPesoFromJson(String str) =>
     ControlPeso.fromJson(json.decode(str));
 
@@ -23,7 +25,8 @@ class ControlPeso {
   String? operatorEmbarcacion;
   String idOperator;
   String controlPesoOperator;
-  List<String>? lavadores;
+  List<Lavador>? lavadores;
+  List<double>? pesos;
   double? totalWeight;
   double? otherWeight;
   String? idWeightList;
@@ -35,6 +38,7 @@ class ControlPeso {
   String? placa;
   String? hourRun;
   String? bascula;
+  String? tipo;
   String? status;
   String? comment;
   String? createdAt;
@@ -54,6 +58,7 @@ class ControlPeso {
     required this.idOperator,
     required this.controlPesoOperator,
     this.lavadores,
+    this.pesos,
     this.totalWeight,
     this.otherWeight,
     this.idWeightList,
@@ -65,6 +70,7 @@ class ControlPeso {
     this.placa,
     this.hourRun,
     this.bascula,
+    this.tipo,
     this.status,
     this.comment,
     this.createdAt,
@@ -88,7 +94,11 @@ class ControlPeso {
         controlPesoOperator: json["operator"],
         lavadores: json["lavadores"] == null
             ? []
-            : List<String>.from(json["lavadores"].map((x) => x)),
+            : List<Lavador>.from(
+                json["lavadores"].map((x) => Lavador.fromJson(x))),
+        pesos: json["pesos"] == null
+            ? []
+            : List<double>.from(json["pesos"].map((p) => p)),
         totalWeight: json["total_weight"] is String
             ? double.parse(json["total_weight"])
             : json["total_weight"] is int
@@ -121,6 +131,7 @@ class ControlPeso {
         hourRun: json["hour_run"],
         bascula: json["bascula"],
         status: json["status"],
+        tipo: json["tipo"],
         comment: json["comment"],
         createdAt: json["created_at"],
       );
@@ -140,6 +151,7 @@ class ControlPeso {
         "id_operator": idOperator,
         "operator": controlPesoOperator,
         "lavadores": lavadores,
+        "pesos": pesos,
         "total_weight": totalWeight,
         "other_weight": otherWeight,
         "id_weight_list": idWeightList,
@@ -151,6 +163,7 @@ class ControlPeso {
         "placa": placa,
         "hour_run": hourRun,
         "bascula": bascula,
+        "tipo": tipo,
         "status": status,
         "comment": comment,
         "created_at": createdAt,

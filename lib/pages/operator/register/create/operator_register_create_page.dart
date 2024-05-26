@@ -31,6 +31,7 @@ class _OperatorRegisterCreatePageState
   UserModel? user;
   List<Lavador> lavadores = [];
   Lavador? lavador;
+  String? tipo;
 
   @override
   void initState() {
@@ -61,6 +62,11 @@ class _OperatorRegisterCreatePageState
       String year = DateTime.now().year.toString();
       String hourInit = DateFormat.jm().format(DateTime.now()).toString();
 
+      if (tipo == null) {
+        Fluttertoast.showToast(msg: 'Debe seleccionar si es carga o descarga');
+        return;
+      }
+
       if (embarcacion.isEmpty && driverEmb.isEmpty) {
         Fluttertoast.showToast(
             msg:
@@ -79,6 +85,7 @@ class _OperatorRegisterCreatePageState
         idOperator: user!.id!,
         conductor: driver,
         placa: placa,
+        tipo: tipo,
         lavadores: [],
         controlPesoOperator: '${user?.name ?? ''} ${user?.lastname ?? ''}',
         status: 'INICIADO',
@@ -105,6 +112,37 @@ class _OperatorRegisterCreatePageState
       ),
       body: ListView(
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: SizedBox(
+                  //width: 170,
+                  child: RadioListTile(
+                      title: const Text('CARGA'),
+                      value: 'CARGA',
+                      groupValue: tipo,
+                      onChanged: (value) {
+                        tipo = value;
+                        refresh();
+                      }),
+                ),
+              ),
+              Expanded(
+                child: SizedBox(
+                  //width: 170,
+                  child: RadioListTile(
+                      title: const Text('DESCARGA'),
+                      value: 'DESCARGA',
+                      groupValue: tipo,
+                      onChanged: (value) {
+                        tipo = value;
+                        refresh();
+                      }),
+                ),
+              ),
+            ],
+          ),
           _inputEmbarcacion(),
           _inputOperatorEmbarcacion(),
           _inputDriver(),
@@ -235,38 +273,6 @@ class _OperatorRegisterCreatePageState
           hintStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
           focusColor: Colors.black,
         ),
-      ),
-    );
-  }
-
-  Widget _dropDown() {
-    return Container(
-      margin: const EdgeInsets.all(20),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: Colors.white,
-        border: Border.all(width: 1, color: Colors.black54),
-      ),
-      child: DropdownButton<Lavador>(
-        value: lavador,
-        hint: const Text('Selecciona un lavador'),
-        isExpanded: true,
-        icon: const Icon(Icons.arrow_drop_down),
-        elevation: 14,
-        style: const TextStyle(color: Colors.black),
-        underline: Container(),
-        onChanged: (Lavador? value) {
-          // This is called when the user selects an item.
-          lavador = value;
-          refresh();
-        },
-        items: lavadores.map<DropdownMenuItem<Lavador>>((Lavador value) {
-          return DropdownMenuItem<Lavador>(
-            value: value,
-            child: Text(value.name),
-          );
-        }).toList(),
       ),
     );
   }

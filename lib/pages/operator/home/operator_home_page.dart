@@ -123,7 +123,7 @@ class _OperatorHomePageState extends State<OperatorHomePage> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.all(20),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
@@ -132,7 +132,7 @@ class _OperatorHomePageState extends State<OperatorHomePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const CustomText(text: 'Registro'),
+            CustomText(text: control.tipo ?? ''),
             CustomText(
                 text: '${control.date} ${control.hourInit}',
                 size: 14,
