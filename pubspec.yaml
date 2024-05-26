@@ -44,7 +44,6 @@ dependencies:
   firebase_storage: ^10.1.0
   shared_preferences: ^2.0.6
   url_launcher: ^6.0.10
-  #fluttertoast: ^8.2.5
   font_awesome_flutter: ^9.1.0
   image_picker: ^0.8.3+3
   mime_type: ^1.0.0
@@ -53,6 +52,7 @@ dependencies:
   table_calendar: ^3.0.7
   share: ^2.0.4
   fluttertoast: ^8.2.5
+  date_time_picker: ^2.1.0
 
 dev_dependencies:
   flutter_test:

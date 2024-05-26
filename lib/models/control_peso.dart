@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter_mario_garcia_app/models/descuento.dart';
 import 'package:flutter_mario_garcia_app/models/lavador.dart';
 
 ControlPeso controlPesoFromJson(String str) =>
@@ -27,16 +28,18 @@ class ControlPeso {
   String controlPesoOperator;
   List<Lavador>? lavadores;
   List<double>? pesos;
+  List<Descuento>? descuentoPesos;
+  List<Descuento>? gastos;
   double? totalWeight;
   double? otherWeight;
-  String? idWeightList;
-  String? idOtherWeightList;
   int? totalBox;
   int? boxEmpty;
   int? boxNoEmpty;
+  int? recoveredBox;
   String? conductor;
   String? placa;
   String? hourRun;
+  String? hourLeave;
   String? bascula;
   String? tipo;
   String? status;
@@ -59,16 +62,18 @@ class ControlPeso {
     required this.controlPesoOperator,
     this.lavadores,
     this.pesos,
+    this.descuentoPesos,
+    this.gastos,
     this.totalWeight,
     this.otherWeight,
-    this.idWeightList,
-    this.idOtherWeightList,
     this.totalBox,
     this.boxEmpty,
     this.boxNoEmpty,
+    this.recoveredBox,
     this.conductor,
     this.placa,
     this.hourRun,
+    this.hourLeave,
     this.bascula,
     this.tipo,
     this.status,
@@ -99,6 +104,14 @@ class ControlPeso {
         pesos: json["pesos"] == null
             ? []
             : List<double>.from(json["pesos"].map((p) => p)),
+        descuentoPesos: json["descuento_peso"] == null
+            ? []
+            : List<Descuento>.from(
+                json["descuento_peso"].map((x) => Descuento.fromJson(x))),
+        gastos: json["gastos"] == null
+            ? []
+            : List<Descuento>.from(
+                json["gastos"].map((x) => Descuento.fromJson(x))),
         totalWeight: json["total_weight"] is String
             ? double.parse(json["total_weight"])
             : json["total_weight"] is int
@@ -109,8 +122,6 @@ class ControlPeso {
             : json["other_weight"] is int
                 ? json["other_weight"]?.toDouble()
                 : json["other_weight"],
-        idWeightList: json["id_weight_list"],
-        idOtherWeightList: json["id_other_weight_list"],
         totalBox: json["total_box"] is String
             ? int.parse(json["total_box"])
             : json["total_box"] is double
@@ -126,9 +137,15 @@ class ControlPeso {
             : json["box_no_empty"] is double
                 ? json["box_no_empty"].toInt()
                 : json["box_no_empty"],
+        recoveredBox: json["recovered_box"] is String
+            ? int.parse(json["recovered_box"])
+            : json["recovered_box"] is double
+                ? json["recovered_box"].toInt()
+                : json["recovered_box"],
         conductor: json["conductor"],
         placa: json["placa"],
         hourRun: json["hour_run"],
+        hourLeave: json["hour_leave"],
         bascula: json["bascula"],
         status: json["status"],
         tipo: json["tipo"],
@@ -152,16 +169,17 @@ class ControlPeso {
         "operator": controlPesoOperator,
         "lavadores": lavadores,
         "pesos": pesos,
+        "descuento_peso": descuentoPesos,
+        "gastos": gastos,
         "total_weight": totalWeight,
         "other_weight": otherWeight,
-        "id_weight_list": idWeightList,
-        "id_other_weight_list": idOtherWeightList,
         "total_box": totalBox,
         "box_empty": boxEmpty,
         "box_no_empty": boxNoEmpty,
         "conductor": conductor,
         "placa": placa,
         "hour_run": hourRun,
+        "hour_leave": hourLeave,
         "bascula": bascula,
         "tipo": tipo,
         "status": status,
