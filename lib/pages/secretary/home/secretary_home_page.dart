@@ -93,7 +93,7 @@ class _SecretaryHomePageState extends State<SecretaryHomePage> {
                 ),
                 onTap: () {
                   launchUrl(Uri.parse(
-                      'https://taxmoto-server-politicas-terminos.fly.dev/terminos.html'));
+                      'https://mario-garcia-server-politicas-terminos.fly.dev/terminos.html'));
                 },
                 leading: const Icon(Icons.info_outline, size: 20),
                 trailing: const Icon(Icons.keyboard_arrow_right_outlined),
@@ -105,7 +105,7 @@ class _SecretaryHomePageState extends State<SecretaryHomePage> {
                 ),
                 onTap: () {
                   launchUrl(Uri.parse(
-                      'https://taxmoto-server-politicas-terminos.fly.dev/politica.html'));
+                      'https://mario-garcia-server-politicas-terminos.fly.dev/politica.html'));
                 },
                 leading: const Icon(Icons.info_outline, size: 20),
                 trailing: const Icon(Icons.keyboard_arrow_right_outlined),

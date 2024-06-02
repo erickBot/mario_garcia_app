@@ -15,6 +15,26 @@ class AdminHomePage extends StatefulWidget {
 class _AdminHomePageState extends State<AdminHomePage> {
   final AuthFirebaseService _authFirebaseService = AuthFirebaseService();
   GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();
+
+  List<Map<String, dynamic>> list = [
+    {
+      "name": "Registros muelle",
+      "icon": Icons.museum,
+      "route": "admin/muelle/list"
+    },
+    {
+      "name": "Registros planta",
+      "icon": Icons.store,
+      "route": "admin/muelle/list"
+    },
+    {"name": "Cuentas", "icon": Icons.people, "route": "admin/accounts/list"},
+    {
+      "name": "Lavadores",
+      "icon": Icons.people,
+      "route": "admin/lavadores/list"
+    },
+  ];
+
   //
   @override
   void initState() {
@@ -45,6 +65,45 @@ class _AdminHomePageState extends State<AdminHomePage> {
         leading: IconButton(
           onPressed: openDrawer,
           icon: const Icon(Icons.menu),
+        ),
+      ),
+      body: Container(
+        margin: const EdgeInsets.all(20),
+        child: GridView.count(
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          crossAxisCount: 2,
+          childAspectRatio: 1.2,
+          scrollDirection: Axis.vertical,
+          children: list
+              .map((Map<String, dynamic> model) => _cardOption(model))
+              .toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget _cardOption(Map<String, dynamic> model) {
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, model['route']);
+      },
+      child: Container(
+        margin: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+          border: Border.all(width: .5, color: Colors.black54),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(model['icon'], color: Theme.of(context).primaryColor),
+            const SizedBox(height: 10),
+            CustomText(text: model['name'], weight: FontWeight.w500, size: 16),
+          ],
         ),
       ),
     );
@@ -96,7 +155,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 ),
                 onTap: () {
                   launchUrl(Uri.parse(
-                      'https://taxmoto-server-politicas-terminos.fly.dev/terminos.html'));
+                      'https://mario-garcia-server-politicas-terminos.fly.dev/terminos.html'));
                 },
                 leading: const Icon(Icons.info_outline, size: 20),
                 trailing: const Icon(Icons.keyboard_arrow_right_outlined),
@@ -108,7 +167,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 ),
                 onTap: () {
                   launchUrl(Uri.parse(
-                      'https://taxmoto-server-politicas-terminos.fly.dev/politica.html'));
+                      'https://mario-garcia-server-politicas-terminos.fly.dev/politica.html'));
                 },
                 leading: const Icon(Icons.info_outline, size: 20),
                 trailing: const Icon(Icons.keyboard_arrow_right_outlined),

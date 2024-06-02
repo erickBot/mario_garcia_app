@@ -31,6 +31,7 @@ class _OperatorRegisterUpdatePageState
   final TextEditingController _numCajasRecuperadasCon = TextEditingController();
   final TextEditingController _cajaLlenaController = TextEditingController();
   final TextEditingController _cajaVaciaController = TextEditingController();
+  final TextEditingController _cajaPerdidaController = TextEditingController();
   final TextEditingController _pesoController = TextEditingController();
   final TextEditingController _nameDescuentoPesoCon = TextEditingController();
   final TextEditingController _valueDescuentoPesoCon = TextEditingController();
@@ -354,6 +355,7 @@ class _OperatorRegisterUpdatePageState
       int cajasRecuperadas = 0;
       int cajasLLenas = 0;
       int cajasVacias = 0;
+      int cajasPerdidas = 0;
       String placa = _placaController.text;
       String driver = _driverController.text;
       String hourEnd = DateFormat.jm().format(DateTime.now()).toString();
@@ -382,6 +384,9 @@ class _OperatorRegisterUpdatePageState
       }
       if (_cajaVaciaController.text.isNotEmpty) {
         cajasVacias = int.parse(_cajaVaciaController.text);
+      }
+      if (_cajaPerdidaController.text.isNotEmpty) {
+        cajasPerdidas = int.parse(_cajaPerdidaController.text);
       }
 
       if (lavadorSelected.isEmpty) {
@@ -437,7 +442,15 @@ class _OperatorRegisterUpdatePageState
 
       await _controlPesoService.update(data, control!.id!);
 
+      _prefs.save('vascula', null);
+      _prefs.save('descuento_peso', []);
+      _prefs.save('gastos', []);
+      _prefs.save('peso', []);
+
       Fluttertoast.showToast(msg: 'Datos actualizados!');
+      Future.delayed(const Duration(seconds: 1), () {
+        Navigator.pop(context, true);
+      });
     } catch (e) {
       Fluttertoast.showToast(msg: 'Ocurrio un errror al actualizar registro!');
       print(e);
@@ -781,6 +794,39 @@ class _OperatorRegisterUpdatePageState
                       ),
                     ),
                   ],
+                ),
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              const CustomText(text: 'Cajas perdidas', weight: FontWeight.w400),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _cajaPerdidaController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  hintText: '0',
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide:
+                        const BorderSide(color: Colors.black54, width: .5),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide:
+                        const BorderSide(color: Colors.black54, width: .5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide:
+                        const BorderSide(color: Colors.black, width: .5),
+                  ),
+                  prefixStyle: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w300),
+                  hintStyle: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w300),
+                  focusColor: Colors.black,
                 ),
               ),
             ],

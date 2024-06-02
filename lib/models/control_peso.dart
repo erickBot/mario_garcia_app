@@ -36,6 +36,7 @@ class ControlPeso {
   int? boxEmpty;
   int? boxNoEmpty;
   int? recoveredBox;
+  int? boxLost;
   String? conductor;
   String? placa;
   String? hourRun;
@@ -70,6 +71,7 @@ class ControlPeso {
     this.boxEmpty,
     this.boxNoEmpty,
     this.recoveredBox,
+    this.boxLost,
     this.conductor,
     this.placa,
     this.hourRun,
@@ -142,6 +144,11 @@ class ControlPeso {
             : json["recovered_box"] is double
                 ? json["recovered_box"].toInt()
                 : json["recovered_box"],
+        boxLost: json["box_lost"] is String
+            ? int.parse(json["box_lost"])
+            : json["box_lost"] is double
+                ? json["box_lost"].toInt()
+                : json["box_lost"],
         conductor: json["conductor"],
         placa: json["placa"],
         hourRun: json["hour_run"],
@@ -176,6 +183,7 @@ class ControlPeso {
         "total_box": totalBox,
         "box_empty": boxEmpty,
         "box_no_empty": boxNoEmpty,
+        "box_lost": boxLost,
         "conductor": conductor,
         "placa": placa,
         "hour_run": hourRun,

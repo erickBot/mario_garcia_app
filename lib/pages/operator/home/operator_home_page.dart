@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mario_garcia_app/models/control_peso.dart';
 import 'package:flutter_mario_garcia_app/models/user.dart';
+import 'package:flutter_mario_garcia_app/pages/operator/register/create/operator_register_create_page.dart';
+import 'package:flutter_mario_garcia_app/pages/operator/register/detail/operator_register_detail_page.dart';
 import 'package:flutter_mario_garcia_app/pages/operator/register/update/operator_register_update_page.dart';
 import 'package:flutter_mario_garcia_app/providers/user_provider.dart';
 import 'package:flutter_mario_garcia_app/services/authentication_service.dart';
@@ -23,10 +25,17 @@ class _OperatorHomePageState extends State<OperatorHomePage> {
 
   UserModel? user;
   bool isHover = false;
+  String? month;
   @override
   void initState() {
     super.initState();
     user = Provider.of<UserProvider>(context, listen: false).currentUser;
+    month = DateTime.now().month.toString();
+    refresh();
+  }
+
+  void refresh() {
+    setState(() {});
   }
 
   void openDrawer() {
@@ -43,8 +52,7 @@ class _OperatorHomePageState extends State<OperatorHomePage> {
   }
 
   Future<List<ControlPeso>> getRegisters() async {
-    return await _controlPesoService.getByIdOperatorAndStatus(
-        user!.id!, 'INICIADO');
+    return await _controlPesoService.getByIdOperatorAndMonth(user!.id!, month!);
   }
 
   @override
@@ -60,8 +68,20 @@ class _OperatorHomePageState extends State<OperatorHomePage> {
               children: [
                 const Spacer(),
                 InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, 'operator/register/create');
+                  onTap: () async {
+                    final res = await Navigator.push<bool>(
+                      context,
+                      MaterialPageRoute<bool>(
+                        builder: (BuildContext context) =>
+                            const OperatorRegisterCreatePage(),
+                      ),
+                    );
+
+                    if (res != null) {
+                      if (res) {
+                        refresh();
+                      }
+                    }
                   },
                   onHover: (value) {
                     isHover = !isHover;
@@ -113,14 +133,30 @@ class _OperatorHomePageState extends State<OperatorHomePage> {
 
   Widget _cardControlPeso(ControlPeso control) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push<void>(
-          context,
-          MaterialPageRoute<void>(
-            builder: (BuildContext context) =>
-                OperatorRegisterUpdatePage(control: control),
-          ),
-        );
+      onTap: () async {
+        if (control.status == 'INICIADO') {
+          final res = await Navigator.push<bool>(
+            context,
+            MaterialPageRoute<bool>(
+              builder: (BuildContext context) =>
+                  OperatorRegisterUpdatePage(control: control),
+            ),
+          );
+
+          if (res != null) {
+            if (res) {
+              refresh();
+            }
+          }
+        } else {
+          Navigator.push<void>(
+            context,
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) =>
+                  OperatorRegisterDetailPage(control: control),
+            ),
+          );
+        }
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
@@ -129,14 +165,38 @@ class _OperatorHomePageState extends State<OperatorHomePage> {
           borderRadius: BorderRadius.circular(5),
           border: Border.all(width: 1, color: Colors.black54),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomText(text: control.tipo ?? ''),
-            CustomText(
-                text: '${control.date} ${control.hourInit}',
-                size: 14,
-                color: Colors.black54),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(text: control.embarcacion),
+                CustomText(
+                  text: '${control.date} ${control.hourInit}',
+                  size: 14,
+                  weight: FontWeight.w300,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                  text: control.status!,
+                  size: 12,
+                  color: control.status == 'FINALIZADO'
+                      ? Colors.red
+                      : Colors.green,
+                  weight: FontWeight.w300,
+                ),
+                CustomText(
+                  text: '${control.totalWeight ?? 0} kg.',
+                  size: 14,
+                  weight: FontWeight.w300,
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -186,7 +246,7 @@ class _OperatorHomePageState extends State<OperatorHomePage> {
                 ),
                 onTap: () {
                   launchUrl(Uri.parse(
-                      'https://taxmoto-server-politicas-terminos.fly.dev/terminos.html'));
+                      'https://mario-garcia-server-politicas-terminos.fly.dev/terminos.html'));
                 },
                 leading: const Icon(Icons.info_outline, size: 20),
                 trailing: const Icon(Icons.keyboard_arrow_right_outlined),
@@ -198,7 +258,7 @@ class _OperatorHomePageState extends State<OperatorHomePage> {
                 ),
                 onTap: () {
                   launchUrl(Uri.parse(
-                      'https://taxmoto-server-politicas-terminos.fly.dev/politica.html'));
+                      'https://mario-garcia-server-politicas-terminos.fly.dev/politica.html'));
                 },
                 leading: const Icon(Icons.info_outline, size: 20),
                 trailing: const Icon(Icons.keyboard_arrow_right_outlined),

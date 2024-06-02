@@ -72,6 +72,42 @@ class ControlPesoService {
     return list;
   }
 
+  Future<List<ControlPeso>> getByIdOperatorAndMonth(
+      String id, String month) async {
+    QuerySnapshot querySnapshot = await _ref!
+        .where('id_operator', isEqualTo: id)
+        .where('month', isEqualTo: month)
+        .orderBy('timestamp', descending: true)
+        .get();
+
+    var allData = querySnapshot.docs.map((doc) => doc.data());
+
+    List<ControlPeso> list = [];
+
+    for (var data in allData) {
+      list.add(ControlPeso.fromJson(data as Map<String, dynamic>));
+    }
+
+    return list;
+  }
+
+  Future<List<ControlPeso>> getByMonth(String month) async {
+    QuerySnapshot querySnapshot = await _ref!
+        .where('month', isEqualTo: month)
+        .orderBy('timestamp', descending: true)
+        .get();
+
+    var allData = querySnapshot.docs.map((doc) => doc.data());
+
+    List<ControlPeso> list = [];
+
+    for (var data in allData) {
+      list.add(ControlPeso.fromJson(data as Map<String, dynamic>));
+    }
+
+    return list;
+  }
+
   Future<List<ControlPeso>> getByIdOperatorAndStatus(
       String id, String status) async {
     QuerySnapshot querySnapshot = await _ref!

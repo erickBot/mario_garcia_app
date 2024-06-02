@@ -5,7 +5,10 @@ import 'package:flutter_mario_garcia_app/pages/admin/accounts/list/admin_account
 import 'package:flutter_mario_garcia_app/pages/admin/home/admin_home.dart';
 import 'package:flutter_mario_garcia_app/pages/admin/lavadores/create/admin_lavadores_create.dart';
 import 'package:flutter_mario_garcia_app/pages/admin/lavadores/list/admin_lavadores_list_page.dart';
+import 'package:flutter_mario_garcia_app/pages/admin/muelle/list/admin_muelle_list_page.dart';
 import 'package:flutter_mario_garcia_app/pages/assistent/home/assistent_home_page.dart';
+import 'package:flutter_mario_garcia_app/pages/help_share_app/help_page.dart';
+import 'package:flutter_mario_garcia_app/pages/help_share_app/share_app_page.dart';
 import 'package:flutter_mario_garcia_app/pages/login/login_page.dart';
 import 'package:flutter_mario_garcia_app/pages/operator/home/operator_home_page.dart';
 import 'package:flutter_mario_garcia_app/pages/operator/register/create/operator_register_create_page.dart';
@@ -48,10 +51,13 @@ class _MyAppState extends State<MyApp> {
           'admin/accounts/create': (_) => const AdminAccountsCreate(),
           'admin/lavadores/list': (_) => const AdminLavadoresListPage(),
           'admin/lavadores/create': (_) => const AdminLavadoresCreate(),
+          'admin/muelle/list': (_) => const AdminMuelleListPage(),
           'operator/home': (_) => const OperatorHomePage(),
           'operator/register/create': (_) => const OperatorRegisterCreatePage(),
           'secretary/home': (_) => const SecretaryHomePage(),
           'assistent/home': (_) => const AssistentHomePage(),
+          'client/share': (BuildContext context) => const ShareAppPage(),
+          'client/help': (BuildContext context) => const HelpPage(),
         },
         theme: ThemeData(
             appBarTheme: const AppBarTheme(
