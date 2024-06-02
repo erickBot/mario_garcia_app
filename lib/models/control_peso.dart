@@ -45,6 +45,7 @@ class ControlPeso {
   String? tipo;
   String? status;
   String? comment;
+  String? imageUrl;
   String? createdAt;
 
   ControlPeso({
@@ -79,6 +80,7 @@ class ControlPeso {
     this.bascula,
     this.tipo,
     this.status,
+    this.imageUrl,
     this.comment,
     this.createdAt,
   });
@@ -156,6 +158,7 @@ class ControlPeso {
         bascula: json["bascula"],
         status: json["status"],
         tipo: json["tipo"],
+        imageUrl: json["image_url"],
         comment: json["comment"],
         createdAt: json["created_at"],
       );
@@ -191,6 +194,7 @@ class ControlPeso {
         "bascula": bascula,
         "tipo": tipo,
         "status": status,
+        "image_url": imageUrl,
         "comment": comment,
         "created_at": createdAt,
       };

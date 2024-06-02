@@ -53,7 +53,6 @@ class _MyAppState extends State<MyApp> {
           'admin/lavadores/create': (_) => const AdminLavadoresCreate(),
           'admin/muelle/list': (_) => const AdminMuelleListPage(),
           'operator/home': (_) => const OperatorHomePage(),
-          'operator/register/create': (_) => const OperatorRegisterCreatePage(),
           'secretary/home': (_) => const SecretaryHomePage(),
           'assistent/home': (_) => const AssistentHomePage(),
           'client/share': (BuildContext context) => const ShareAppPage(),

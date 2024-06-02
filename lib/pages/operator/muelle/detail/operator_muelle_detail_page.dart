@@ -12,17 +12,16 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-class OperatorRegisterDetailPage extends StatefulWidget {
+class OperatorMuelleDetailPage extends StatefulWidget {
   final ControlPeso control;
-  const OperatorRegisterDetailPage({super.key, required this.control});
+  const OperatorMuelleDetailPage({super.key, required this.control});
 
   @override
-  State<OperatorRegisterDetailPage> createState() =>
-      _OperatorRegisterDetailPageState();
+  State<OperatorMuelleDetailPage> createState() =>
+      _OperatorMuelleDetailPageState();
 }
 
-class _OperatorRegisterDetailPageState
-    extends State<OperatorRegisterDetailPage> {
+class _OperatorMuelleDetailPageState extends State<OperatorMuelleDetailPage> {
   final LavadorService _lavadorService = LavadorService();
   final ControlPesoService _controlPesoService = ControlPesoService();
   final SharedPref _prefs = SharedPref();
@@ -128,6 +127,11 @@ class _OperatorRegisterDetailPageState
           _cardPesoLiquido(),
           _cardComments(),
           _cardResponsable(),
+          const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: CustomText(text: 'ANEXOS'),
+          ),
+          _cardImage(),
         ],
       ),
     );
@@ -506,8 +510,23 @@ class _OperatorRegisterDetailPageState
                   weight: FontWeight.w300),
             ],
           ),
+          CustomText(
+              text: 'Balanza ${control?.bascula ?? ''}',
+              weight: FontWeight.w300),
         ],
       ),
+    );
+  }
+
+  Widget _cardImage() {
+    return Container(
+      margin: const EdgeInsets.all(10),
+      child: control!.imageUrl != null
+          ? FadeInImage(
+              placeholder: const AssetImage('assets/img/jar-loading.gif'),
+              image: NetworkImage(control!.imageUrl!),
+            )
+          : Image.asset('assets/img/no-image.png'),
     );
   }
 }

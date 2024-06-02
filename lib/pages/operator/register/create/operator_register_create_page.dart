@@ -119,8 +119,8 @@ class _OperatorRegisterCreatePageState
                 child: SizedBox(
                   //width: 170,
                   child: RadioListTile(
-                      title: const Text('CARGA'),
-                      value: 'CARGA',
+                      title: const Text('MUELLE'),
+                      value: 'MUELLE',
                       groupValue: tipo,
                       onChanged: (value) {
                         tipo = value;
@@ -132,8 +132,8 @@ class _OperatorRegisterCreatePageState
                 child: SizedBox(
                   //width: 170,
                   child: RadioListTile(
-                      title: const Text('DESCARGA'),
-                      value: 'DESCARGA',
+                      title: const Text('PLANTA'),
+                      value: 'PLANTA',
                       groupValue: tipo,
                       onChanged: (value) {
                         tipo = value;
@@ -143,14 +143,26 @@ class _OperatorRegisterCreatePageState
               ),
             ],
           ),
-          _inputEmbarcacion(),
-          _inputOperatorEmbarcacion(),
-          _inputDriver(),
-          _inputPlaca(),
+          tipo == 'MUELLE' ? _bodyMuelle() : _bodyPlanta(),
         ],
       ),
       bottomNavigationBar: _button(),
     );
+  }
+
+  Widget _bodyMuelle() {
+    return Column(
+      children: [
+        _inputEmbarcacion(),
+        _inputOperatorEmbarcacion(),
+        _inputDriver(),
+        _inputPlaca(),
+      ],
+    );
+  }
+
+  Widget _bodyPlanta() {
+    return Column();
   }
 
   Widget _inputEmbarcacion() {

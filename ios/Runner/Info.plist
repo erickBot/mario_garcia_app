@@ -6,6 +6,10 @@
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Cargar imagen a tu cuenta de usuario es opcional. Si decides cargar una imagen, te aclaramos que no se utilizara la imagen y tus datos para otros fines, ni personas externas podran acceder a tus datos e imagen. La imagen solo es para uso en la aplicacion.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Cargar imagen a tu cuenta de usuario es opcional. Si decides cargar una imagen, te aclaramos que no se utilizara la imagen y tus datos para otros fines, ni personas externas podran acceder a tus datos e imagen. La imagen solo es para uso en la aplicacion.</string>
 	<key>CFBundleDisplayName</key>
 	<string>Garcia App</string>
 	<key>CFBundleExecutable</key>

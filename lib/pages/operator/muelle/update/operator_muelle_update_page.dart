@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mario_garcia_app/models/control_peso.dart';
@@ -5,28 +7,30 @@ import 'package:flutter_mario_garcia_app/models/descuento.dart';
 import 'package:flutter_mario_garcia_app/models/lavador.dart';
 import 'package:flutter_mario_garcia_app/models/user.dart';
 import 'package:flutter_mario_garcia_app/providers/user_provider.dart';
+import 'package:flutter_mario_garcia_app/services/cloudinary_service.dart';
 import 'package:flutter_mario_garcia_app/services/control_peso_service.dart';
 import 'package:flutter_mario_garcia_app/services/lavador_service.dart';
 import 'package:flutter_mario_garcia_app/utils/shared_preferences.dart';
 import 'package:flutter_mario_garcia_app/widgets/custom_text.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class OperatorRegisterUpdatePage extends StatefulWidget {
+class OperatorMuelleUpdatePage extends StatefulWidget {
   final ControlPeso control;
-  const OperatorRegisterUpdatePage({super.key, required this.control});
+  const OperatorMuelleUpdatePage({super.key, required this.control});
 
   @override
-  State<OperatorRegisterUpdatePage> createState() =>
-      _OperatorRegisterUpdatePageState();
+  State<OperatorMuelleUpdatePage> createState() =>
+      _OperatorMuelleUpdatePageState();
 }
 
-class _OperatorRegisterUpdatePageState
-    extends State<OperatorRegisterUpdatePage> {
+class _OperatorMuelleUpdatePageState extends State<OperatorMuelleUpdatePage> {
   final LavadorService _lavadorService = LavadorService();
   final ControlPesoService _controlPesoService = ControlPesoService();
   final SharedPref _prefs = SharedPref();
+  final CloudinaryService _cloudinaryService = CloudinaryService();
   final TextEditingController _numCajasController = TextEditingController();
   final TextEditingController _numCajasRecuperadasCon = TextEditingController();
   final TextEditingController _cajaLlenaController = TextEditingController();
@@ -59,6 +63,9 @@ class _OperatorRegisterUpdatePageState
   String? vascula;
   String? hourRunSelected;
   String? hourLeaveSelected;
+  XFile? pickedFile;
+  File? imageFile;
+  String? imageUrl;
 
   //
   @override
@@ -417,11 +424,16 @@ class _OperatorRegisterUpdatePageState
         newGastos.add(item.toJson());
       }
 
+      if (imageFile != null) {
+        imageUrl = await _cloudinaryService.subirImagen(imageFile);
+      }
+
       Map<String, dynamic> data = {
         'total_box': cajasEntregadas,
         'recovered_box': cajasRecuperadas,
         'box_no_empty': cajasLLenas,
         'box_empty': cajasVacias,
+        'box_lost': cajasPerdidas,
         'lavadores': list,
         'pesos': pesos,
         'descuento_peso': descuentos,
@@ -437,6 +449,7 @@ class _OperatorRegisterUpdatePageState
         'operator': '${user!.name} ${user!.lastname}',
         'status': 'FINALIZADO',
         'total_weight': pesoLiquido,
+        'image_url': imageUrl,
         'created_at': date,
       };
 
@@ -458,11 +471,56 @@ class _OperatorRegisterUpdatePageState
     }
   }
 
+  Future imageSelected(ImageSource imageSource) async {
+    pickedFile = await ImagePicker().pickImage(source: imageSource);
+
+    if (pickedFile != null) {
+      imageFile = File(pickedFile!.path);
+    }
+
+    Navigator.pop(context);
+    refresh();
+  }
+
+  void showAlertDialogImage() {
+    Widget galleryButton = ElevatedButton(
+      onPressed: () => imageSelected(ImageSource.gallery),
+      style: ElevatedButton.styleFrom(
+          backgroundColor: Theme.of(context).primaryColor),
+      child: const CustomText(text: 'Galeria', color: Colors.white),
+    );
+    Widget cameraButton = ElevatedButton(
+      onPressed: () => imageSelected(ImageSource.camera),
+      style: ElevatedButton.styleFrom(
+          backgroundColor: Theme.of(context).primaryColor),
+      child: const CustomText(text: 'Camara', color: Colors.white),
+    );
+
+    AlertDialog alertDialog = AlertDialog(
+      title: const CustomText(text: 'Selecciona tu imagen'),
+      actions: [
+        galleryButton,
+        cameraButton,
+      ],
+    );
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alertDialog;
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${control?.tipo ?? ''} DE PRODUCTO'),
+        title: const Text('Registro en muelle'),
+        actions: [
+          IconButton(
+              onPressed: showAlertDialogImage,
+              icon: const Icon(Icons.add_a_photo_outlined)),
+        ],
       ),
       body: ListView(
         children: [

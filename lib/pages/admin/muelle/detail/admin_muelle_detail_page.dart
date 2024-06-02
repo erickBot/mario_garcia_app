@@ -8,7 +8,6 @@ import 'package:flutter_mario_garcia_app/services/control_peso_service.dart';
 import 'package:flutter_mario_garcia_app/services/lavador_service.dart';
 import 'package:flutter_mario_garcia_app/utils/shared_preferences.dart';
 import 'package:flutter_mario_garcia_app/widgets/custom_text.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -21,10 +20,6 @@ class AdminMuelleDetailPage extends StatefulWidget {
 }
 
 class _AdminMuelleDetailPageState extends State<AdminMuelleDetailPage> {
-  final LavadorService _lavadorService = LavadorService();
-  final ControlPesoService _controlPesoService = ControlPesoService();
-  final SharedPref _prefs = SharedPref();
-
   UserModel? user;
   ControlPeso? control;
   List<Lavador> lavadores = [];
@@ -126,6 +121,11 @@ class _AdminMuelleDetailPageState extends State<AdminMuelleDetailPage> {
           _cardPesoLiquido(),
           _cardComments(),
           _cardResponsable(),
+          const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: CustomText(text: 'ANEXOS'),
+          ),
+          _cardImage(),
         ],
       ),
     );
@@ -507,8 +507,23 @@ class _AdminMuelleDetailPageState extends State<AdminMuelleDetailPage> {
                   weight: FontWeight.w300),
             ],
           ),
+          CustomText(
+              text: 'Balanza ${control?.bascula ?? ''}',
+              weight: FontWeight.w300),
         ],
       ),
+    );
+  }
+
+  Widget _cardImage() {
+    return Container(
+      margin: const EdgeInsets.all(10),
+      child: control!.imageUrl != null
+          ? FadeInImage(
+              placeholder: const AssetImage('assets/img/jar-loading.gif'),
+              image: NetworkImage(control!.imageUrl!),
+            )
+          : Image.asset('assets/img/no-image.png'),
     );
   }
 }
