@@ -1,3 +1,4 @@
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mario_garcia_app/models/control_peso.dart';
 import 'package:flutter_mario_garcia_app/models/lavador.dart';
@@ -10,16 +11,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class OperatorRegisterCreatePage extends StatefulWidget {
-  const OperatorRegisterCreatePage({super.key});
+class OperatorMuelleCreatePage extends StatefulWidget {
+  const OperatorMuelleCreatePage({super.key});
 
   @override
-  State<OperatorRegisterCreatePage> createState() =>
-      _OperatorRegisterCreatePageState();
+  State<OperatorMuelleCreatePage> createState() =>
+      _OperatorMuelleCreatePageState();
 }
 
-class _OperatorRegisterCreatePageState
-    extends State<OperatorRegisterCreatePage> {
+class _OperatorMuelleCreatePageState extends State<OperatorMuelleCreatePage> {
   final ControlPesoService _controlPesoService = ControlPesoService();
   final LavadorService _lavadorService = LavadorService();
 
@@ -108,61 +108,18 @@ class _OperatorRegisterCreatePageState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nuevo registro'),
+        title: const Text('Registro muelle'),
       ),
       body: ListView(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: SizedBox(
-                  //width: 170,
-                  child: RadioListTile(
-                      title: const Text('MUELLE'),
-                      value: 'MUELLE',
-                      groupValue: tipo,
-                      onChanged: (value) {
-                        tipo = value;
-                        refresh();
-                      }),
-                ),
-              ),
-              Expanded(
-                child: SizedBox(
-                  //width: 170,
-                  child: RadioListTile(
-                      title: const Text('PLANTA'),
-                      value: 'PLANTA',
-                      groupValue: tipo,
-                      onChanged: (value) {
-                        tipo = value;
-                        refresh();
-                      }),
-                ),
-              ),
-            ],
-          ),
-          tipo == 'MUELLE' ? _bodyMuelle() : _bodyPlanta(),
+          _inputEmbarcacion(),
+          _inputOperatorEmbarcacion(),
+          _inputDriver(),
+          _inputPlaca(),
         ],
       ),
       bottomNavigationBar: _button(),
     );
-  }
-
-  Widget _bodyMuelle() {
-    return Column(
-      children: [
-        _inputEmbarcacion(),
-        _inputOperatorEmbarcacion(),
-        _inputDriver(),
-        _inputPlaca(),
-      ],
-    );
-  }
-
-  Widget _bodyPlanta() {
-    return Column();
   }
 
   Widget _inputEmbarcacion() {

@@ -30,6 +30,8 @@ class RegisterPlanta {
   String? matricula;
   String? embarcacion;
   String? comments;
+  String? month;
+  String? year;
   String? status;
   int? timestamp;
   String? createdAt;
@@ -56,6 +58,8 @@ class RegisterPlanta {
     this.embarcacion,
     this.comments,
     this.status,
+    this.month,
+    this.year,
     this.timestamp,
     this.createdAt,
   });
@@ -64,8 +68,14 @@ class RegisterPlanta {
         id: json["id"],
         idOperator: json["id_operator"],
         nameOperator: json["name_operator"],
-        totalDescarga: json["total_descarga"]?.toDouble(),
-        batchRecibido: json["batch_recibido"],
+        totalDescarga: json["total_descarga"] is String
+            ? double.parse(json["total_descarga"])
+            : json["total_descarga"] is int
+                ? json["total_descarga"]?.toDouble()
+                : json["total_descarga"],
+        batchRecibido: json["batch_recibido"] is String
+            ? int.parse(json["batch_recibido"])
+            : json["batch_recibido"],
         reportPesaje: json["report_pesaje"],
         typeTransport: json["type_transport"],
         planta: json["planta"],
@@ -73,15 +83,31 @@ class RegisterPlanta {
         placa: json["placa"],
         hourInit: json["hour_init"],
         hourEnd: json["hour_end"],
-        cuentaWzero: json["cuenta_wzero"],
-        cuentaWspan: json["cuenta_wspan"],
-        cuentaWval: json["cuenta_wval"]?.toDouble(),
-        coeficienteCal: json["coeficiente_cal"]?.toDouble(),
-        images: List<String>.from(json["images"].map((x) => x)),
+        cuentaWzero: json["cuenta_wzero"] is String
+            ? int.parse(json["cuenta_wzero"])
+            : json["cuenta_wzero"],
+        cuentaWspan: json["cuenta_wspan"] is String
+            ? int.parse(json["cuenta_wspan"])
+            : json["cuenta_wspan"],
+        cuentaWval: json["cuenta_wval"] is String
+            ? double.parse(json["cuenta_wval"])
+            : json["cuenta_wval"] is int
+                ? json["cuenta_wval"]?.toDouble()
+                : json["cuenta_wval"],
+        coeficienteCal: json["coeficiente_cal"] is String
+            ? double.parse(json["coeficiente_cal"])
+            : json["coeficiente_cal"] is int
+                ? json["coeficiente_cal"]?.toDouble()
+                : json["coeficiente_cal"],
+        images: json["images"] == null
+            ? []
+            : List<String>.from(json["images"].map((x) => x)),
         matricula: json["matricula"],
         embarcacion: json["embarcacion"],
         comments: json["comments"],
         status: json["status"],
+        month: json["month"],
+        year: json["year"],
         timestamp: json["timestamp"] is String
             ? int.parse(json["timestamp"])
             : json["timestamp"],
@@ -105,11 +131,13 @@ class RegisterPlanta {
         "cuenta_wspan": cuentaWspan,
         "cuenta_wval": cuentaWval,
         "coeficiente_cal": coeficienteCal,
-        "images": List<dynamic>.from(images!.map((x) => x)),
+        "images": images,
         "matricula": matricula,
         "embarcacion": embarcacion,
         "comments": comments,
         "status": status,
+        "month": month,
+        "year": year,
         "timestamp": timestamp,
         "created_at": createdAt,
       };

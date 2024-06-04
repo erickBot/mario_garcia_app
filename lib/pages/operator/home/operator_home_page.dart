@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mario_garcia_app/models/control_peso.dart';
 import 'package:flutter_mario_garcia_app/models/user.dart';
-import 'package:flutter_mario_garcia_app/pages/operator/register/create/operator_register_create_page.dart';
-import 'package:flutter_mario_garcia_app/pages/operator/muelle/list/operator_muelle_list_page.dart';
-import 'package:flutter_mario_garcia_app/pages/operator/planta/list/operator_planta_list_page.dart';
 import 'package:flutter_mario_garcia_app/providers/user_provider.dart';
 import 'package:flutter_mario_garcia_app/services/authentication_service.dart';
 import 'package:flutter_mario_garcia_app/services/control_peso_service.dart';
@@ -26,7 +23,18 @@ class _OperatorHomePageState extends State<OperatorHomePage> {
   UserModel? user;
   bool isHover = false;
   String? month;
-  List<String> list = ['MUELLE', 'PLANTA'];
+  List<Map<String, dynamic>> list = [
+    {
+      "name": "Registros muelle",
+      "icon": Icons.museum,
+      "route": "operator/muelle/list"
+    },
+    {
+      "name": "Registros planta",
+      "icon": Icons.store,
+      "route": "operator/planta/list"
+    },
+  ];
   //
   @override
   void initState() {
@@ -60,70 +68,47 @@ class _OperatorHomePageState extends State<OperatorHomePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return DefaultTabController(
-      length: list.length,
-      child: Scaffold(
-        drawer: _drawer(size),
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(150),
-          child: AppBar(
-            title: const Text('Operador'),
-            flexibleSpace: Column(
-              children: [
-                const Spacer(),
-                InkWell(
-                  onTap: () async {
-                    final res = await Navigator.push<bool>(
-                      context,
-                      MaterialPageRoute<bool>(
-                        builder: (BuildContext context) =>
-                            const OperatorRegisterCreatePage(),
-                      ),
-                    );
-
-                    if (res != null) {
-                      if (res) {
-                        refresh();
-                      }
-                    }
-                  },
-                  onHover: (value) {
-                    isHover = !isHover;
-                    print(isHover);
-                    setState(() {});
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.all(20),
-                    padding: const EdgeInsets.all(10),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(width: 1, color: Colors.white),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        CustomText(text: 'Nuevo registro', color: Colors.white),
-                        Icon(Icons.add, color: Colors.white),
-                      ],
-                    ),
-                  ),
-                ),
-                TabBar(
-                  padding: const EdgeInsets.all(5),
-                  labelColor: Colors.white,
-                  unselectedLabelColor: Colors.black54,
-                  indicatorColor: Colors.white,
-                  tabs: list.map((model) => CustomText(text: model)).toList(),
-                ),
-              ],
-            ),
-          ),
+    return Scaffold(
+      drawer: _drawer(size),
+      appBar: AppBar(
+        title: const Text('Operador'),
+      ),
+      body: Container(
+        margin: const EdgeInsets.all(20),
+        child: GridView.count(
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          crossAxisCount: 2,
+          childAspectRatio: 1.2,
+          scrollDirection: Axis.vertical,
+          children: list
+              .map((Map<String, dynamic> model) => _cardOption(model))
+              .toList(),
         ),
-        body: const TabBarView(
+      ),
+    );
+  }
+
+  Widget _cardOption(Map<String, dynamic> model) {
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, model['route']);
+      },
+      child: Container(
+        margin: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+          border: Border.all(width: .5, color: Colors.black54),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            OperatorMuelleListPage(),
-            OperatorPlantaListPage(),
+            Icon(model['icon'], color: Theme.of(context).primaryColor),
+            const SizedBox(height: 10),
+            CustomText(text: model['name'], weight: FontWeight.w500, size: 16),
           ],
         ),
       ),

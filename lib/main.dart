@@ -11,7 +11,10 @@ import 'package:flutter_mario_garcia_app/pages/help_share_app/help_page.dart';
 import 'package:flutter_mario_garcia_app/pages/help_share_app/share_app_page.dart';
 import 'package:flutter_mario_garcia_app/pages/login/login_page.dart';
 import 'package:flutter_mario_garcia_app/pages/operator/home/operator_home_page.dart';
-import 'package:flutter_mario_garcia_app/pages/operator/register/create/operator_register_create_page.dart';
+import 'package:flutter_mario_garcia_app/pages/operator/muelle/create/operator_muelle_create_page.dart';
+import 'package:flutter_mario_garcia_app/pages/operator/muelle/list/operator_muelle_list_page.dart';
+import 'package:flutter_mario_garcia_app/pages/operator/planta/create/operator_planta_create_page.dart';
+import 'package:flutter_mario_garcia_app/pages/operator/planta/list/operator_planta_list_page.dart';
 import 'package:flutter_mario_garcia_app/pages/secretary/home/secretary_home_page.dart';
 import 'package:flutter_mario_garcia_app/pages/update/update_page.dart';
 import 'package:flutter_mario_garcia_app/providers/user_provider.dart';
@@ -57,6 +60,8 @@ class _MyAppState extends State<MyApp> {
           'assistent/home': (_) => const AssistentHomePage(),
           'client/share': (BuildContext context) => const ShareAppPage(),
           'client/help': (BuildContext context) => const HelpPage(),
+          'operator/muelle/list': (_) => const OperatorMuelleListPage(),
+          'operator/planta/list': (_) => const OperatorPlantaListPage(),
         },
         theme: ThemeData(
             appBarTheme: const AppBarTheme(

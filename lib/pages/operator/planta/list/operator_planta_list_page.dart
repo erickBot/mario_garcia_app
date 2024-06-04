@@ -4,6 +4,7 @@ import 'package:flutter_mario_garcia_app/models/register_planta.dart';
 import 'package:flutter_mario_garcia_app/models/user.dart';
 import 'package:flutter_mario_garcia_app/pages/operator/muelle/detail/operator_muelle_detail_page.dart';
 import 'package:flutter_mario_garcia_app/pages/operator/muelle/update/operator_muelle_update_page.dart';
+import 'package:flutter_mario_garcia_app/pages/operator/planta/create/operator_planta_create_page.dart';
 import 'package:flutter_mario_garcia_app/providers/user_provider.dart';
 import 'package:flutter_mario_garcia_app/services/control_peso_service.dart';
 import 'package:flutter_mario_garcia_app/services/register_planta.dart';
@@ -44,8 +45,30 @@ class _OperatorPlantaListPageState extends State<OperatorPlantaListPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return SizedBox(
-      child: FutureBuilder(
+    return Scaffold(
+      appBar: AppBar(
+        title: const CustomText(text: 'Registros planta', color: Colors.white),
+        actions: [
+          IconButton(
+              onPressed: () async {
+                final res = await Navigator.push<bool>(
+                  context,
+                  MaterialPageRoute<bool>(
+                    builder: (BuildContext context) =>
+                        const OperatorPlantaCreatePage(),
+                  ),
+                );
+
+                if (res != null) {
+                  if (res) {
+                    refresh();
+                  }
+                }
+              },
+              icon: const Icon(Icons.add)),
+        ],
+      ),
+      body: FutureBuilder(
         future: getRegisters(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
