@@ -1,15 +1,22 @@
+import 'dart:io';
+
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mario_garcia_app/models/business.dart';
 import 'package:flutter_mario_garcia_app/models/control_peso.dart';
 import 'package:flutter_mario_garcia_app/models/lavador.dart';
 import 'package:flutter_mario_garcia_app/models/register_planta.dart';
 import 'package:flutter_mario_garcia_app/models/user.dart';
 import 'package:flutter_mario_garcia_app/providers/user_provider.dart';
+import 'package:flutter_mario_garcia_app/services/business_service.dart';
+import 'package:flutter_mario_garcia_app/services/cloudinary_service.dart';
 import 'package:flutter_mario_garcia_app/services/control_peso_service.dart';
 import 'package:flutter_mario_garcia_app/services/lavador_service.dart';
+import 'package:flutter_mario_garcia_app/services/plantas_service.dart';
 import 'package:flutter_mario_garcia_app/services/register_planta.dart';
 import 'package:flutter_mario_garcia_app/widgets/custom_text.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +30,9 @@ class OperatorPlantaCreatePage extends StatefulWidget {
 
 class _OperatorPlantaCreatePageState extends State<OperatorPlantaCreatePage> {
   final RegisterPlantaService _registerPlantaService = RegisterPlantaService();
+  final PlantasService _plantasService = PlantasService();
+  final BusinessService _businessService = BusinessService();
+  final CloudinaryService _cloudinaryService = CloudinaryService();
   final TextEditingController _totalDescargadoController =
       TextEditingController();
   final TextEditingController _bathRecibidoController = TextEditingController();
@@ -44,15 +54,37 @@ class _OperatorPlantaCreatePageState extends State<OperatorPlantaCreatePage> {
   String? tipo;
   String? hourRunSelected;
   String? hourLeaveSelected;
+  List<Business> businessList = [];
+  List<Business> plantas = [];
+  Business? bussiness;
+  Business? plantaIndustrial;
+  XFile? pickedFile;
+  File? imageFile;
+  String? imageUrl;
+  List<File> fileList = [];
+  List<String> images = [];
 
   @override
   void initState() {
     super.initState();
     user = Provider.of<UserProvider>(context, listen: false).currentUser;
+    getBusiness();
+    getPlantas();
+    refresh();
   }
 
   void refresh() {
     setState(() {});
+  }
+
+  void getBusiness() async {
+    businessList = await _businessService.getAll();
+    refresh();
+  }
+
+  void getPlantas() async {
+    plantas = await _plantasService.getAll();
+    refresh();
   }
 
   void create() async {
@@ -87,12 +119,29 @@ class _OperatorPlantaCreatePageState extends State<OperatorPlantaCreatePage> {
         return;
       }
 
+      if (plantaIndustrial == null) {
+        Fluttertoast.showToast(msg: 'Debe seleecionar una planta indsutrial');
+        return;
+      }
+
+      if (bussiness == null) {
+        Fluttertoast.showToast(msg: 'Debe seleecionar una razon social');
+        return;
+      }
+
       double totalDescargado = double.parse(descargado);
       int batchRecibio = int.parse(batch);
       int wzero = int.parse(zero);
       int wspan = int.parse(span);
       double wval = double.parse(val);
       double coefCaibration = double.parse(coeficiente);
+
+      if (fileList.isNotEmpty) {
+        for (final item in fileList) {
+          imageUrl = await _cloudinaryService.subirImagen(item);
+          images.add(imageUrl!);
+        }
+      }
 
       RegisterPlanta planta = RegisterPlanta(
         totalDescarga: totalDescargado,
@@ -110,9 +159,18 @@ class _OperatorPlantaCreatePageState extends State<OperatorPlantaCreatePage> {
         nameOperator: '${user!.name} ${user!.lastname}',
         month: month,
         year: year,
+        embarcacion: embarcacion,
+        matricula: matricula,
+        status: 'FINALIZADO',
         createdAt: date,
         timestamp: DateTime.now().millisecondsSinceEpoch,
+        razonSocial: bussiness!.name,
+        planta: plantaIndustrial!.name,
+        comments: _commentController.text,
+        images: images,
       );
+
+      await _registerPlantaService.create(planta);
 
       Fluttertoast.showToast(msg: 'Registro creado con exito!');
 
@@ -126,11 +184,57 @@ class _OperatorPlantaCreatePageState extends State<OperatorPlantaCreatePage> {
     }
   }
 
+  Future imageSelected(ImageSource imageSource) async {
+    pickedFile = await ImagePicker().pickImage(source: imageSource);
+
+    if (pickedFile != null) {
+      imageFile = File(pickedFile!.path);
+      fileList.add(imageFile!);
+    }
+
+    Navigator.pop(context);
+    refresh();
+  }
+
+  void showAlertDialogImage() {
+    Widget galleryButton = ElevatedButton(
+      onPressed: () => imageSelected(ImageSource.gallery),
+      style: ElevatedButton.styleFrom(
+          backgroundColor: Theme.of(context).primaryColor),
+      child: const CustomText(text: 'Galería', color: Colors.white),
+    );
+    Widget cameraButton = ElevatedButton(
+      onPressed: () => imageSelected(ImageSource.camera),
+      style: ElevatedButton.styleFrom(
+          backgroundColor: Theme.of(context).primaryColor),
+      child: const CustomText(text: 'Cámara', color: Colors.white),
+    );
+
+    AlertDialog alertDialog = AlertDialog(
+      title: const CustomText(text: 'Selecciona tu imagen'),
+      actions: [
+        galleryButton,
+        cameraButton,
+      ],
+    );
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alertDialog;
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Registro planta'),
+        actions: [
+          IconButton(
+              onPressed: showAlertDialogImage,
+              icon: const Icon(Icons.add_a_photo_outlined))
+        ],
       ),
       body: ListView(
         children: [
@@ -160,7 +264,18 @@ class _OperatorPlantaCreatePageState extends State<OperatorPlantaCreatePage> {
           _coeficienteCalibracion(),
           _inputMatricula(),
           _inputEmbarcacion(),
+          _dropDownPlantas(),
+          _dropDownBusiness(),
           _comment(),
+          const Padding(
+            padding: EdgeInsets.all(20),
+            child: CustomText(text: 'IMAGENES'),
+          ),
+          fileList.isNotEmpty
+              ? Column(
+                  children: fileList.map((e) => _cardImage(e)).toList(),
+                )
+              : const SizedBox(height: 1),
         ],
       ),
       bottomNavigationBar: _button(),
@@ -585,6 +700,68 @@ class _OperatorPlantaCreatePageState extends State<OperatorPlantaCreatePage> {
     );
   }
 
+  Widget _dropDownBusiness() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.white,
+        border: Border.all(width: 1, color: Colors.black54),
+      ),
+      child: DropdownButton<Business>(
+        value: bussiness,
+        hint: const Text('Selecciona una razón social'),
+        isExpanded: true,
+        icon: const Icon(Icons.arrow_drop_down),
+        elevation: 14,
+        style: const TextStyle(color: Colors.black),
+        underline: Container(),
+        onChanged: (value) {
+          bussiness = value;
+          refresh();
+        },
+        items: businessList.map<DropdownMenuItem<Business>>((Business value) {
+          return DropdownMenuItem<Business>(
+            value: value,
+            child: Text(value.name),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _dropDownPlantas() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.white,
+        border: Border.all(width: 1, color: Colors.black54),
+      ),
+      child: DropdownButton<Business>(
+        value: plantaIndustrial,
+        hint: const Text('Selecciona una planta'),
+        isExpanded: true,
+        icon: const Icon(Icons.arrow_drop_down),
+        elevation: 14,
+        style: const TextStyle(color: Colors.black),
+        underline: Container(),
+        onChanged: (value) {
+          plantaIndustrial = value;
+          refresh();
+        },
+        items: plantas.map<DropdownMenuItem<Business>>((Business value) {
+          return DropdownMenuItem<Business>(
+            value: value,
+            child: Text(value.name),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
   Widget _button() {
     return Container(
       margin: const EdgeInsets.all(20),
@@ -602,6 +779,17 @@ class _OperatorPlantaCreatePageState extends State<OperatorPlantaCreatePage> {
             size: 16,
             weight: FontWeight.w500,
             color: Colors.white),
+      ),
+    );
+  }
+
+  Widget _cardImage(File file) {
+    return Container(
+      height: 200,
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      child: FadeInImage(
+        placeholder: const AssetImage('assets/img/jar-loading.gif'),
+        image: FileImage(file),
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:flutter_mario_garcia_app/models/user.dart';
 import 'package:flutter_mario_garcia_app/pages/operator/muelle/detail/operator_muelle_detail_page.dart';
 import 'package:flutter_mario_garcia_app/pages/operator/muelle/update/operator_muelle_update_page.dart';
 import 'package:flutter_mario_garcia_app/pages/operator/planta/create/operator_planta_create_page.dart';
+import 'package:flutter_mario_garcia_app/pages/operator/planta/detail/operator_planta_detail_page.dart';
 import 'package:flutter_mario_garcia_app/providers/user_provider.dart';
 import 'package:flutter_mario_garcia_app/services/control_peso_service.dart';
 import 'package:flutter_mario_garcia_app/services/register_planta.dart';
@@ -94,29 +95,13 @@ class _OperatorPlantaListPageState extends State<OperatorPlantaListPage> {
   Widget _cardControlPeso(RegisterPlanta planta) {
     return GestureDetector(
       onTap: () async {
-        // if (planta.status == 'INICIADO') {
-        //   final res = await Navigator.push<bool>(
-        //     context,
-        //     MaterialPageRoute<bool>(
-        //       builder: (BuildContext context) =>
-        //           OperatorMuelleUpdatePage(control: control),
-        //     ),
-        //   );
-
-        //   if (res != null) {
-        //     if (res) {
-        //       refresh();
-        //     }
-        //   }
-        // } else {
-        //   Navigator.push<void>(
-        //     context,
-        //     MaterialPageRoute<void>(
-        //       builder: (BuildContext context) =>
-        //           OperatorMuelleDetailPage(control: control),
-        //     ),
-        //   );
-        // }
+        Navigator.push<void>(
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) =>
+                OperatorPlantaDetailPage(planta: planta),
+          ),
+        );
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
@@ -131,7 +116,12 @@ class _OperatorPlantaListPageState extends State<OperatorPlantaListPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(text: planta.embarcacion ?? ''),
+                SizedBox(
+                  width: 210,
+                  child: Text(planta.planta ?? '',
+                      style: const TextStyle(fontWeight: FontWeight.w400),
+                      overflow: TextOverflow.ellipsis),
+                ),
                 CustomText(
                   text: '${planta.createdAt ?? ''} ${planta.hourInit ?? ''}',
                   size: 14,
@@ -143,7 +133,7 @@ class _OperatorPlantaListPageState extends State<OperatorPlantaListPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: planta.status!,
+                  text: planta.status ?? '',
                   size: 12,
                   color:
                       planta.status == 'FINALIZADO' ? Colors.red : Colors.green,
