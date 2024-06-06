@@ -5,6 +5,7 @@ import 'package:flutter_mario_garcia_app/providers/user_provider.dart';
 import 'package:flutter_mario_garcia_app/services/authentication_service.dart';
 import 'package:flutter_mario_garcia_app/services/control_peso_service.dart';
 import 'package:flutter_mario_garcia_app/widgets/custom_text.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -26,12 +27,12 @@ class _OperatorHomePageState extends State<OperatorHomePage> {
   List<Map<String, dynamic>> list = [
     {
       "name": "Registros muelle",
-      "icon": Icons.museum,
+      "icon": FontAwesomeIcons.productHunt,
       "route": "operator/muelle/list"
     },
     {
       "name": "Registros planta",
-      "icon": Icons.store,
+      "icon": FontAwesomeIcons.industry,
       "route": "operator/planta/list"
     },
   ];
