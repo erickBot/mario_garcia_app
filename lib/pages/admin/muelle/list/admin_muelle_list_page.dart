@@ -95,7 +95,7 @@ class _AdminMuelleListPageState extends State<AdminMuelleListPage> {
                 CustomText(text: control.embarcacion),
                 CustomText(
                   text: '${control.date} ${control.hourInit}',
-                  size: 14,
+                  size: 12,
                   weight: FontWeight.w300,
                 ),
               ],

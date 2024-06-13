@@ -13,16 +13,15 @@ import 'package:flutter_mario_garcia_app/widgets/custom_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class OperatorPlantaDetailPage extends StatefulWidget {
+class AdminPlantaDetailPage extends StatefulWidget {
   final RegisterPlanta planta;
-  const OperatorPlantaDetailPage({super.key, required this.planta});
+  const AdminPlantaDetailPage({super.key, required this.planta});
 
   @override
-  State<OperatorPlantaDetailPage> createState() =>
-      _OperatorPlantaDetailPageState();
+  State<AdminPlantaDetailPage> createState() => _AdminPlantaDetailPageState();
 }
 
-class _OperatorPlantaDetailPageState extends State<OperatorPlantaDetailPage> {
+class _AdminPlantaDetailPageState extends State<AdminPlantaDetailPage> {
   final RegisterPlantaService _registerPlantaService = RegisterPlantaService();
   final PlantasService _plantasService = PlantasService();
   final BusinessService _businessService = BusinessService();

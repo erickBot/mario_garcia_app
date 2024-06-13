@@ -25,7 +25,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
     {
       "name": "Registros planta",
       "icon": Icons.store,
-      "route": "admin/muelle/list"
+      "route": "admin/planta/list"
     },
     {"name": "Cuentas", "icon": Icons.people, "route": "admin/accounts/list"},
     {
