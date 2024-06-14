@@ -128,10 +128,14 @@ class _OperatorMuelleListPageState extends State<OperatorMuelleListPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(text: control.embarcacion),
+                SizedBox(
+                  width: 180,
+                  child: Text(control.embarcacion,
+                      overflow: TextOverflow.ellipsis),
+                ),
                 CustomText(
                   text: '${control.date} ${control.hourInit}',
-                  size: 14,
+                  size: 12,
                   weight: FontWeight.w300,
                 ),
               ],

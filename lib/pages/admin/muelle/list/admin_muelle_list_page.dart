@@ -41,7 +41,7 @@ class _AdminMuelleListPageState extends State<AdminMuelleListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    //final size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
           title: const Text('Registros muelle'),
@@ -80,7 +80,7 @@ class _AdminMuelleListPageState extends State<AdminMuelleListPage> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
@@ -92,7 +92,11 @@ class _AdminMuelleListPageState extends State<AdminMuelleListPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(text: control.embarcacion),
+                SizedBox(
+                  width: 190,
+                  child: Text(control.embarcacion,
+                      overflow: TextOverflow.ellipsis),
+                ),
                 CustomText(
                   text: '${control.date} ${control.hourInit}',
                   size: 12,

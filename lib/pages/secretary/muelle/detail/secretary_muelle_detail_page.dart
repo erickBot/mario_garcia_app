@@ -8,18 +8,24 @@ import 'package:flutter_mario_garcia_app/services/control_peso_service.dart';
 import 'package:flutter_mario_garcia_app/services/lavador_service.dart';
 import 'package:flutter_mario_garcia_app/utils/shared_preferences.dart';
 import 'package:flutter_mario_garcia_app/widgets/custom_text.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-class AdminMuelleDetailPage extends StatefulWidget {
+class SecretaryMuelleDetailPage extends StatefulWidget {
   final ControlPeso control;
-  const AdminMuelleDetailPage({super.key, required this.control});
+  const SecretaryMuelleDetailPage({super.key, required this.control});
 
   @override
-  State<AdminMuelleDetailPage> createState() => _AdminMuelleDetailPageState();
+  State<SecretaryMuelleDetailPage> createState() =>
+      _SecretaryMuelleDetailPageState();
 }
 
-class _AdminMuelleDetailPageState extends State<AdminMuelleDetailPage> {
+class _SecretaryMuelleDetailPageState extends State<SecretaryMuelleDetailPage> {
+  final LavadorService _lavadorService = LavadorService();
+  final ControlPesoService _controlPesoService = ControlPesoService();
+  final SharedPref _prefs = SharedPref();
+
   UserModel? user;
   ControlPeso? control;
   List<Lavador> lavadores = [];
@@ -103,10 +109,10 @@ class _AdminMuelleDetailPageState extends State<AdminMuelleDetailPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                    text: 'H.Inicio: ${control?.hourInit ?? '   '}',
+                    text: 'H.Inicio: ${control?.hourInit ?? ''}',
                     weight: FontWeight.w400),
                 CustomText(
-                    text: 'H.Final: ${control?.hourEnd ?? '        '}',
+                    text: 'H.Final: ${control?.hourEnd ?? ''}',
                     weight: FontWeight.w400),
               ],
             ),
@@ -291,7 +297,7 @@ class _AdminMuelleDetailPageState extends State<AdminMuelleDetailPage> {
                         text: 'Entregadas', weight: FontWeight.w400),
                     const SizedBox(height: 8),
                     CustomText(
-                        text: control?.totalBox?.toString() ?? '0',
+                        text: control?.totalBox.toString() ?? '0',
                         weight: FontWeight.w300),
                   ],
                 ),
@@ -304,7 +310,7 @@ class _AdminMuelleDetailPageState extends State<AdminMuelleDetailPage> {
                         text: 'Eecuperadas', weight: FontWeight.w400),
                     const SizedBox(height: 8),
                     CustomText(
-                        text: control?.recoveredBox?.toString() ?? '0',
+                        text: control?.recoveredBox.toString() ?? '0',
                         weight: FontWeight.w300),
                   ],
                 ),
@@ -330,7 +336,7 @@ class _AdminMuelleDetailPageState extends State<AdminMuelleDetailPage> {
                     const CustomText(text: 'Llenas', weight: FontWeight.w400),
                     const SizedBox(height: 8),
                     CustomText(
-                        text: control?.boxNoEmpty?.toString() ?? '0',
+                        text: control?.boxNoEmpty.toString() ?? '0',
                         weight: FontWeight.w300),
                   ],
                 ),
@@ -342,7 +348,7 @@ class _AdminMuelleDetailPageState extends State<AdminMuelleDetailPage> {
                     const CustomText(text: 'Vacias', weight: FontWeight.w400),
                     const SizedBox(height: 8),
                     CustomText(
-                        text: control?.boxEmpty?.toString() ?? '0',
+                        text: control?.boxEmpty.toString() ?? '',
                         weight: FontWeight.w300),
                   ],
                 ),
@@ -352,12 +358,9 @@ class _AdminMuelleDetailPageState extends State<AdminMuelleDetailPage> {
                   children: [
                     const CustomText(text: 'Total', weight: FontWeight.w400),
                     const SizedBox(height: 8),
-                    control!.totalBox != null
-                        ? CustomText(
-                            text:
-                                '${control!.totalBox! + control!.recoveredBox!}',
-                            weight: FontWeight.w300)
-                        : const CustomText(text: '0', weight: FontWeight.w300),
+                    CustomText(
+                        text: '${control!.totalBox! + control!.recoveredBox!}',
+                        weight: FontWeight.w300),
                   ],
                 ),
               ),
@@ -388,9 +391,7 @@ class _AdminMuelleDetailPageState extends State<AdminMuelleDetailPage> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(3),
-                          child: Chip(
-                              label: Text(lavador.name,
-                                  style: const TextStyle(fontSize: 14))),
+                          child: Chip(label: Text(lavador.name)),
                         ),
                       ],
                     ))
@@ -433,8 +434,7 @@ class _AdminMuelleDetailPageState extends State<AdminMuelleDetailPage> {
                           child: Chip(
                             label: CustomText(
                                 text:
-                                    '${model.name}: ${model.value.toString()} kg.',
-                                size: 14),
+                                    '${model.name}: ${model.value.toString()} kg.'),
                           ),
                         ),
                       ],
@@ -475,8 +475,7 @@ class _AdminMuelleDetailPageState extends State<AdminMuelleDetailPage> {
                           child: Chip(
                             label: CustomText(
                                 text:
-                                    '${model.name}: S/. ${model.value.toString()}',
-                                size: 14),
+                                    '${model.name}: S/. ${model.value.toString()}'),
                           ),
                         ),
                       ],

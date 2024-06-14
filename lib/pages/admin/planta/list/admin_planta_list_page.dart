@@ -99,7 +99,7 @@ class _AdminPlantaListPageState extends State<AdminPlantaListPage> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
@@ -112,7 +112,7 @@ class _AdminPlantaListPageState extends State<AdminPlantaListPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: 210,
+                  width: 190,
                   child: Text(planta.planta ?? '',
                       style: const TextStyle(fontWeight: FontWeight.w400),
                       overflow: TextOverflow.ellipsis),

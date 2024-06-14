@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mario_garcia_app/models/control_peso.dart';
-import 'package:flutter_mario_garcia_app/models/register_planta.dart';
 import 'package:flutter_mario_garcia_app/models/user.dart';
-import 'package:flutter_mario_garcia_app/pages/operator/muelle/detail/operator_muelle_detail_page.dart';
-import 'package:flutter_mario_garcia_app/pages/operator/muelle/update/operator_muelle_update_page.dart';
-import 'package:flutter_mario_garcia_app/pages/operator/planta/create/operator_planta_create_page.dart';
-import 'package:flutter_mario_garcia_app/pages/operator/planta/detail/operator_planta_detail_page.dart';
+import 'package:flutter_mario_garcia_app/pages/secretary/muelle/detail/secretary_muelle_detail_page.dart';
 import 'package:flutter_mario_garcia_app/providers/user_provider.dart';
 import 'package:flutter_mario_garcia_app/services/control_peso_service.dart';
-import 'package:flutter_mario_garcia_app/services/register_planta.dart';
 import 'package:flutter_mario_garcia_app/widgets/custom_text.dart';
 import 'package:provider/provider.dart';
 
-class OperatorPlantaListPage extends StatefulWidget {
-  const OperatorPlantaListPage({super.key});
+class SecretaryMuelleListPage extends StatefulWidget {
+  const SecretaryMuelleListPage({super.key});
 
   @override
-  State<OperatorPlantaListPage> createState() => _OperatorPlantaListPageState();
+  State<SecretaryMuelleListPage> createState() =>
+      _SecretaryMuelleListPageState();
 }
 
-class _OperatorPlantaListPageState extends State<OperatorPlantaListPage> {
-  final RegisterPlantaService _registerPlantaService = RegisterPlantaService();
+class _SecretaryMuelleListPageState extends State<SecretaryMuelleListPage> {
+  final ControlPesoService _controlPesoService = ControlPesoService();
   GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();
 
   UserModel? user;
@@ -38,9 +34,8 @@ class _OperatorPlantaListPageState extends State<OperatorPlantaListPage> {
     setState(() {});
   }
 
-  Future<List<RegisterPlanta>> getRegisters() async {
-    return await _registerPlantaService.getByIdOperatorAndMonth(
-        user!.id!, month!);
+  Future<List<ControlPeso>> getRegisters() async {
+    return await _controlPesoService.getByMonth(month!);
   }
 
   @override
@@ -48,26 +43,7 @@ class _OperatorPlantaListPageState extends State<OperatorPlantaListPage> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const CustomText(text: 'Registros planta', color: Colors.white),
-        actions: [
-          IconButton(
-              onPressed: () async {
-                final res = await Navigator.push<bool>(
-                  context,
-                  MaterialPageRoute<bool>(
-                    builder: (BuildContext context) =>
-                        const OperatorPlantaCreatePage(),
-                  ),
-                );
-
-                if (res != null) {
-                  if (res) {
-                    refresh();
-                  }
-                }
-              },
-              icon: const Icon(Icons.add)),
-        ],
+        title: const CustomText(text: 'Registros muelle', color: Colors.white),
       ),
       body: FutureBuilder(
         future: getRegisters(),
@@ -92,14 +68,14 @@ class _OperatorPlantaListPageState extends State<OperatorPlantaListPage> {
     );
   }
 
-  Widget _cardControlPeso(RegisterPlanta planta) {
+  Widget _cardControlPeso(ControlPeso control) {
     return GestureDetector(
       onTap: () async {
         Navigator.push<void>(
           context,
           MaterialPageRoute<void>(
             builder: (BuildContext context) =>
-                OperatorPlantaDetailPage(planta: planta),
+                SecretaryMuelleDetailPage(control: control),
           ),
         );
       },
@@ -118,13 +94,12 @@ class _OperatorPlantaListPageState extends State<OperatorPlantaListPage> {
               children: [
                 SizedBox(
                   width: 180,
-                  child: Text(planta.planta ?? '',
-                      style: const TextStyle(fontWeight: FontWeight.w400),
+                  child: Text(control.embarcacion,
                       overflow: TextOverflow.ellipsis),
                 ),
                 CustomText(
-                  text: '${planta.createdAt ?? ''} ${planta.hourInit ?? ''}',
-                  size: 14,
+                  text: '${control.date} ${control.hourInit}',
+                  size: 12,
                   weight: FontWeight.w300,
                 ),
               ],
@@ -133,14 +108,15 @@ class _OperatorPlantaListPageState extends State<OperatorPlantaListPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: planta.status ?? '',
+                  text: control.status!,
                   size: 12,
-                  color:
-                      planta.status == 'FINALIZADO' ? Colors.red : Colors.green,
+                  color: control.status == 'FINALIZADO'
+                      ? Colors.red
+                      : Colors.green,
                   weight: FontWeight.w300,
                 ),
                 CustomText(
-                  text: '${planta.totalDescarga ?? 0} kg.',
+                  text: '${control.totalWeight ?? 0} kg.',
                   size: 14,
                   weight: FontWeight.w300,
                 ),

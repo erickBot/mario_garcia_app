@@ -17,6 +17,8 @@ import 'package:flutter_mario_garcia_app/pages/operator/muelle/list/operator_mue
 import 'package:flutter_mario_garcia_app/pages/operator/planta/create/operator_planta_create_page.dart';
 import 'package:flutter_mario_garcia_app/pages/operator/planta/list/operator_planta_list_page.dart';
 import 'package:flutter_mario_garcia_app/pages/secretary/home/secretary_home_page.dart';
+import 'package:flutter_mario_garcia_app/pages/secretary/muelle/list/secretary_muelle_list_page.dart';
+import 'package:flutter_mario_garcia_app/pages/secretary/planta/list/secretary_planta_list_page.dart';
 import 'package:flutter_mario_garcia_app/pages/update/update_page.dart';
 import 'package:flutter_mario_garcia_app/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +61,10 @@ class _MyAppState extends State<MyApp> {
           'admin/planta/list': (_) => const AdminPlantaListPage(),
           'operator/home': (_) => const OperatorHomePage(),
           'secretary/home': (_) => const SecretaryHomePage(),
+          'secretary/muelle/list': (_) => const SecretaryMuelleListPage(),
+          'secretary/planta/list': (_) => const SecretaryPlantaListPage(),
           'assistent/home': (_) => const AssistentHomePage(),
+          'assistent/muelle/list': (_) => const AssistentHomePage(),
           'client/share': (BuildContext context) => const ShareAppPage(),
           'client/help': (BuildContext context) => const HelpPage(),
           'operator/muelle/list': (_) => const OperatorMuelleListPage(),

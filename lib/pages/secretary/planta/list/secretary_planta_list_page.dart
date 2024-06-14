@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mario_garcia_app/models/control_peso.dart';
 import 'package:flutter_mario_garcia_app/models/register_planta.dart';
 import 'package:flutter_mario_garcia_app/models/user.dart';
-import 'package:flutter_mario_garcia_app/pages/operator/muelle/detail/operator_muelle_detail_page.dart';
-import 'package:flutter_mario_garcia_app/pages/operator/muelle/update/operator_muelle_update_page.dart';
 import 'package:flutter_mario_garcia_app/pages/operator/planta/create/operator_planta_create_page.dart';
 import 'package:flutter_mario_garcia_app/pages/operator/planta/detail/operator_planta_detail_page.dart';
+import 'package:flutter_mario_garcia_app/pages/secretary/planta/detail/secretary_planta_detail_page.dart';
 import 'package:flutter_mario_garcia_app/providers/user_provider.dart';
-import 'package:flutter_mario_garcia_app/services/control_peso_service.dart';
 import 'package:flutter_mario_garcia_app/services/register_planta.dart';
 import 'package:flutter_mario_garcia_app/widgets/custom_text.dart';
 import 'package:provider/provider.dart';
 
-class OperatorPlantaListPage extends StatefulWidget {
-  const OperatorPlantaListPage({super.key});
+class SecretaryPlantaListPage extends StatefulWidget {
+  const SecretaryPlantaListPage({super.key});
 
   @override
-  State<OperatorPlantaListPage> createState() => _OperatorPlantaListPageState();
+  State<SecretaryPlantaListPage> createState() =>
+      _SecretaryPlantaListPageState();
 }
 
-class _OperatorPlantaListPageState extends State<OperatorPlantaListPage> {
+class _SecretaryPlantaListPageState extends State<SecretaryPlantaListPage> {
   final RegisterPlantaService _registerPlantaService = RegisterPlantaService();
   GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();
 
@@ -39,8 +37,7 @@ class _OperatorPlantaListPageState extends State<OperatorPlantaListPage> {
   }
 
   Future<List<RegisterPlanta>> getRegisters() async {
-    return await _registerPlantaService.getByIdOperatorAndMonth(
-        user!.id!, month!);
+    return await _registerPlantaService.getByMonth(month!);
   }
 
   @override
@@ -49,25 +46,6 @@ class _OperatorPlantaListPageState extends State<OperatorPlantaListPage> {
     return Scaffold(
       appBar: AppBar(
         title: const CustomText(text: 'Registros planta', color: Colors.white),
-        actions: [
-          IconButton(
-              onPressed: () async {
-                final res = await Navigator.push<bool>(
-                  context,
-                  MaterialPageRoute<bool>(
-                    builder: (BuildContext context) =>
-                        const OperatorPlantaCreatePage(),
-                  ),
-                );
-
-                if (res != null) {
-                  if (res) {
-                    refresh();
-                  }
-                }
-              },
-              icon: const Icon(Icons.add)),
-        ],
       ),
       body: FutureBuilder(
         future: getRegisters(),
@@ -99,7 +77,7 @@ class _OperatorPlantaListPageState extends State<OperatorPlantaListPage> {
           context,
           MaterialPageRoute<void>(
             builder: (BuildContext context) =>
-                OperatorPlantaDetailPage(planta: planta),
+                SecretaryPlantaDetailPage(planta: planta),
           ),
         );
       },
