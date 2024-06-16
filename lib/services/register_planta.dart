@@ -109,6 +109,39 @@ class RegisterPlantaService {
     return list;
   }
 
+  Future<List<RegisterPlanta>> getByPeriodo(
+      int timestamp1, int timestamp2) async {
+    QuerySnapshot querySnapshot = await _ref!
+        .where('timestamp', isLessThanOrEqualTo: timestamp1)
+        .where('timestamp', isGreaterThanOrEqualTo: timestamp2)
+        .get();
+
+    var allData = querySnapshot.docs.map((doc) => doc.data());
+
+    List<RegisterPlanta> list = [];
+
+    for (var data in allData) {
+      list.add(RegisterPlanta.fromJson(data as Map<String, dynamic>));
+    }
+
+    return list;
+  }
+
+  Future<List<RegisterPlanta>> getByYear(String year) async {
+    QuerySnapshot querySnapshot =
+        await _ref!.where('year', isEqualTo: year).get();
+
+    var allData = querySnapshot.docs.map((doc) => doc.data());
+
+    List<RegisterPlanta> list = [];
+
+    for (var data in allData) {
+      list.add(RegisterPlanta.fromJson(data as Map<String, dynamic>));
+    }
+
+    return list;
+  }
+
   Future<List<RegisterPlanta>> getByIdOperatorAndStatus(
       String id, String status) async {
     QuerySnapshot querySnapshot = await _ref!
@@ -123,7 +156,6 @@ class RegisterPlantaService {
     for (var data in allData) {
       list.add(RegisterPlanta.fromJson(data as Map<String, dynamic>));
     }
-
     return list;
   }
 }

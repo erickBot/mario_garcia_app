@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mario_garcia_app/providers/user_provider.dart';
 import 'package:flutter_mario_garcia_app/services/authentication_service.dart';
 import 'package:flutter_mario_garcia_app/widgets/custom_text.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -15,6 +16,20 @@ class AssistentHomePage extends StatefulWidget {
 class _AssistentHomePageState extends State<AssistentHomePage> {
   final AuthFirebaseService _authFirebaseService = AuthFirebaseService();
   GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();
+
+  List<Map<String, dynamic>> list = [
+    {
+      "name": "Registros muelle",
+      "icon": FontAwesomeIcons.productHunt,
+      "route": "secretary/muelle/list"
+    },
+    {
+      "name": "Registros planta",
+      "icon": FontAwesomeIcons.industry,
+      "route": "secretary/planta/list"
+    },
+    {"name": "Tablero", "icon": Icons.dashboard, "route": "dashboard/home"},
+  ];
 
   @override
   void initState() {
@@ -45,6 +60,45 @@ class _AssistentHomePageState extends State<AssistentHomePage> {
         leading: IconButton(
           onPressed: openDrawer,
           icon: const Icon(Icons.menu),
+        ),
+      ),
+      body: Container(
+        margin: const EdgeInsets.all(20),
+        child: GridView.count(
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          crossAxisCount: 2,
+          childAspectRatio: 1.2,
+          scrollDirection: Axis.vertical,
+          children: list
+              .map((Map<String, dynamic> model) => _cardOption(model))
+              .toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget _cardOption(Map<String, dynamic> model) {
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, model['route']);
+      },
+      child: Container(
+        margin: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+          border: Border.all(width: .5, color: Colors.black54),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(model['icon'], color: Theme.of(context).primaryColor),
+            const SizedBox(height: 10),
+            CustomText(text: model['name'], weight: FontWeight.w500, size: 16),
+          ],
         ),
       ),
     );
@@ -84,6 +138,7 @@ class _AssistentHomePageState extends State<AssistentHomePage> {
                 // ),
               ),
               _listTile('Mi cuenta', 'update', Icons.person_outline),
+              _listTile('Tablero', 'dashboard/home', Icons.dashboard),
               _listTile('Compartir App', 'client/share', Icons.share),
               _listTile('Ayuda', 'client/help', Icons.help),
               ListTile(

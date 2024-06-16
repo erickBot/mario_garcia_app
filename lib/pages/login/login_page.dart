@@ -266,7 +266,7 @@ class _LoginPageState extends State<LoginPage> {
     return ElevatedButton(
       onPressed: login,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).primaryColor,
         padding: const EdgeInsets.all(20),
       ),
       child: const CustomText(

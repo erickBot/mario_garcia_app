@@ -13,16 +13,17 @@ import 'package:flutter_mario_garcia_app/widgets/custom_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class OperatorPlantaDetailPage extends StatefulWidget {
+class AdminDashboardPlantaDetailPage extends StatefulWidget {
   final RegisterPlanta planta;
-  const OperatorPlantaDetailPage({super.key, required this.planta});
+  const AdminDashboardPlantaDetailPage({super.key, required this.planta});
 
   @override
-  State<OperatorPlantaDetailPage> createState() =>
-      _OperatorPlantaDetailPageState();
+  State<AdminDashboardPlantaDetailPage> createState() =>
+      _AdminDashboardPlantaDetailPageState();
 }
 
-class _OperatorPlantaDetailPageState extends State<OperatorPlantaDetailPage> {
+class _AdminDashboardPlantaDetailPageState
+    extends State<AdminDashboardPlantaDetailPage> {
   final RegisterPlantaService _registerPlantaService = RegisterPlantaService();
   final PlantasService _plantasService = PlantasService();
   final BusinessService _businessService = BusinessService();
@@ -103,11 +104,6 @@ class _OperatorPlantaDetailPageState extends State<OperatorPlantaDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detalle del despacho'),
-        // actions: [
-        //   IconButton(
-        //       onPressed: showAlertDialogImage,
-        //       icon: const Icon(Icons.add_a_photo_outlined))
-        // ],
       ),
       body: ListView(
         children: [

@@ -125,4 +125,36 @@ class ControlPesoService {
 
     return list;
   }
+
+  Future<List<ControlPeso>> getByPeriodo(int timestamp1, int timestamp2) async {
+    QuerySnapshot querySnapshot = await _ref!
+        .where('timestamp', isLessThanOrEqualTo: timestamp1)
+        .where('timestamp', isGreaterThanOrEqualTo: timestamp2)
+        .get();
+
+    var allData = querySnapshot.docs.map((doc) => doc.data());
+
+    List<ControlPeso> list = [];
+
+    for (var data in allData) {
+      list.add(ControlPeso.fromJson(data as Map<String, dynamic>));
+    }
+
+    return list;
+  }
+
+  Future<List<ControlPeso>> getByYear(String year) async {
+    QuerySnapshot querySnapshot =
+        await _ref!.where('year', isEqualTo: year).get();
+
+    var allData = querySnapshot.docs.map((doc) => doc.data());
+
+    List<ControlPeso> list = [];
+
+    for (var data in allData) {
+      list.add(ControlPeso.fromJson(data as Map<String, dynamic>));
+    }
+
+    return list;
+  }
 }

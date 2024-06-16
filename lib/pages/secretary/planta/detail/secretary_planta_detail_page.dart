@@ -102,7 +102,7 @@ class _SecretaryPlantaDetailPageState extends State<SecretaryPlantaDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(planta?.planta ?? ''),
+        title: const Text('Detalle del despacho'),
       ),
       body: ListView(
         children: [
@@ -126,24 +126,8 @@ class _SecretaryPlantaDetailPageState extends State<SecretaryPlantaDetailPage> {
               ],
             ),
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-              border: Border.all(width: .5, color: Colors.black54),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const CustomText(text: 'Despachado por'),
-                const SizedBox(height: 3),
-                CustomText(
-                    text: planta?.razonSocial ?? '', weight: FontWeight.w300),
-              ],
-            ),
-          ),
+          _cardClient('Cliente', planta?.planta ?? ''),
+          _cardClient('Despachado por', planta?.razonSocial ?? ''),
           _cardInfo(),
           Container(
             width: double.infinity,
@@ -175,6 +159,26 @@ class _SecretaryPlantaDetailPageState extends State<SecretaryPlantaDetailPage> {
                   children: planta!.images!.map((e) => _cardImage(e)).toList(),
                 )
               : const SizedBox(height: 1),
+        ],
+      ),
+    );
+  }
+
+  Widget _cardClient(String title, String text) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+        border: Border.all(width: .5, color: Colors.black54),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomText(text: title),
+          const SizedBox(height: 3),
+          CustomText(text: text, weight: FontWeight.w300),
         ],
       ),
     );

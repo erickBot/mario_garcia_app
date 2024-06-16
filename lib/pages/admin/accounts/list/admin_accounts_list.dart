@@ -103,6 +103,7 @@ class _AdminAccountsListState extends State<AdminAccountsList> {
                   text: user.rolName!, size: 14, weight: FontWeight.w300),
               Switch(
                   value: user.available,
+                  activeColor: Theme.of(context).primaryColor,
                   onChanged: (value) {
                     user.available = value;
                     updateUser(user);

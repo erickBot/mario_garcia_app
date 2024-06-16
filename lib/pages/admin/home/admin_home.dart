@@ -33,6 +33,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
       "icon": Icons.people,
       "route": "admin/lavadores/list"
     },
+    {"name": "Tablero", "icon": Icons.dashboard, "route": "dashboard/home"},
   ];
 
   //
@@ -143,6 +144,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 // ),
               ),
               _listTile('Mi cuenta', 'update', Icons.person_outline),
+              _listTile('Tablero', 'dashboard/home', Icons.dashboard),
               _listTile('Cuentas', 'admin/accounts/list', Icons.people_outline),
               _listTile(
                   'Lavadores', 'admin/lavadores/list', Icons.list_alt_outlined),

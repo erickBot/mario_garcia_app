@@ -13,16 +13,16 @@ import 'package:flutter_mario_garcia_app/widgets/custom_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class OperatorPlantaDetailPage extends StatefulWidget {
+class AssistentPlantaDetailPage extends StatefulWidget {
   final RegisterPlanta planta;
-  const OperatorPlantaDetailPage({super.key, required this.planta});
+  const AssistentPlantaDetailPage({super.key, required this.planta});
 
   @override
-  State<OperatorPlantaDetailPage> createState() =>
-      _OperatorPlantaDetailPageState();
+  State<AssistentPlantaDetailPage> createState() =>
+      _AssistentPlantaDetailPageState();
 }
 
-class _OperatorPlantaDetailPageState extends State<OperatorPlantaDetailPage> {
+class _AssistentPlantaDetailPageState extends State<AssistentPlantaDetailPage> {
   final RegisterPlantaService _registerPlantaService = RegisterPlantaService();
   final PlantasService _plantasService = PlantasService();
   final BusinessService _businessService = BusinessService();
@@ -103,11 +103,6 @@ class _OperatorPlantaDetailPageState extends State<OperatorPlantaDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detalle del despacho'),
-        // actions: [
-        //   IconButton(
-        //       onPressed: showAlertDialogImage,
-        //       icon: const Icon(Icons.add_a_photo_outlined))
-        // ],
       ),
       body: ListView(
         children: [
@@ -231,9 +226,9 @@ class _OperatorPlantaDetailPageState extends State<OperatorPlantaDetailPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CustomText(text: title, weight: FontWeight.w400),
+        CustomText(text: title, weight: FontWeight.w400, size: 14),
         const SizedBox(height: 5),
-        CustomText(text: text, weight: FontWeight.w300),
+        CustomText(text: text, weight: FontWeight.w300, size: 14),
       ],
     );
   }

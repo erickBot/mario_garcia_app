@@ -101,12 +101,7 @@ class _AdminPlantaDetailPageState extends State<AdminPlantaDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Registro planta'),
-        // actions: [
-        //   IconButton(
-        //       onPressed: showAlertDialogImage,
-        //       icon: const Icon(Icons.add_a_photo_outlined))
-        // ],
+        title: const Text('Detalle del despacho'),
       ),
       body: ListView(
         children: [
@@ -130,6 +125,8 @@ class _AdminPlantaDetailPageState extends State<AdminPlantaDetailPage> {
               ],
             ),
           ),
+          _cardClient('Cliente', planta?.planta ?? ''),
+          _cardClient('Despachado por', planta?.razonSocial ?? ''),
           _cardInfo(),
           Container(
             width: double.infinity,
@@ -161,6 +158,26 @@ class _AdminPlantaDetailPageState extends State<AdminPlantaDetailPage> {
                   children: planta!.images!.map((e) => _cardImage(e)).toList(),
                 )
               : const SizedBox(height: 1),
+        ],
+      ),
+    );
+  }
+
+  Widget _cardClient(String title, String text) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+        border: Border.all(width: .5, color: Colors.black54),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomText(text: title),
+          const SizedBox(height: 3),
+          CustomText(text: text, weight: FontWeight.w300),
         ],
       ),
     );
