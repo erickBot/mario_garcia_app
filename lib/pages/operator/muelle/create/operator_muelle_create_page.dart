@@ -62,11 +62,6 @@ class _OperatorMuelleCreatePageState extends State<OperatorMuelleCreatePage> {
       String year = DateTime.now().year.toString();
       String hourInit = DateFormat.jm().format(DateTime.now()).toString();
 
-      if (tipo == null) {
-        Fluttertoast.showToast(msg: 'Debe seleccionar si es carga o descarga');
-        return;
-      }
-
       if (embarcacion.isEmpty && driverEmb.isEmpty) {
         Fluttertoast.showToast(
             msg:
@@ -95,10 +90,11 @@ class _OperatorMuelleCreatePageState extends State<OperatorMuelleCreatePage> {
       Fluttertoast.showToast(msg: 'Registro creado con exito!');
 
       Future.delayed(const Duration(seconds: 1), () {
+        // _progressDialog?.close();
         Navigator.pop(context, true);
       });
     } catch (e) {
-      print(e);
+      // _progressDialog?.close();
       Fluttertoast.showToast(msg: 'Ocurrio un error!');
       return;
     }

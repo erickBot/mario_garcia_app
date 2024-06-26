@@ -23,6 +23,8 @@ class _AdminAccountsCreateState extends State<AdminAccountsCreate> {
   final UserService _userService = UserService();
   final SharedPref _prefs = SharedPref();
 
+  //ProgressDialog? _progressDialog;
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _lastnameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -38,6 +40,7 @@ class _AdminAccountsCreateState extends State<AdminAccountsCreate> {
   @override
   void initState() {
     super.initState();
+    // _progressDialog = ProgressDialog(context: context);
     getRoles();
   }
 
@@ -109,9 +112,7 @@ class _AdminAccountsCreateState extends State<AdminAccountsCreate> {
       // _progressDialog?.show(
       //     max: 100,
       //     msg: 'Espere un momento',
-      //     progressValueColor: active,
-      //     progressBgColor: light);
-      //
+      //     progressValueColor: Theme.of(context).primaryColor);
 
       String createdAt =
           DateFormat.yMd().add_jm().format(DateTime.now()).toString();
@@ -132,13 +133,19 @@ class _AdminAccountsCreateState extends State<AdminAccountsCreate> {
 
         await _userService.create(client);
 
+        //_progressDialog?.close();
+
         Fluttertoast.showToast(msg: 'Usuario fue creado con éxito');
-        Navigator.pop(context, true);
+
+        Future.delayed(const Duration(seconds: 1), () {
+          Navigator.pop(context, true);
+        });
       } else {
+        //_progressDialog?.close();
         Fluttertoast.showToast(msg: 'Error al crear cuenta');
       }
     } catch (error) {
-      //_progressDialog?.close();
+      // _progressDialog?.close();
       Fluttertoast.showToast(msg: 'Ocurrio un error!');
       return;
     }

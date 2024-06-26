@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mario_garcia_app/models/lavador.dart';
 import 'package:flutter_mario_garcia_app/services/lavador_service.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_mario_garcia_app/models/rol.dart';
 import 'package:flutter_mario_garcia_app/widgets/custom_text.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -29,6 +28,7 @@ class _AdminLavadoresCreateState extends State<AdminLavadoresCreate> {
   @override
   void initState() {
     super.initState();
+    //_progressDialog = ProgressDialog(context: context);
   }
 
   void refresh() {
@@ -49,9 +49,7 @@ class _AdminLavadoresCreateState extends State<AdminLavadoresCreate> {
       // _progressDialog?.show(
       //     max: 100,
       //     msg: 'Espere un momento',
-      //     progressValueColor: active,
-      //     progressBgColor: light);
-      //
+      //     progressValueColor: Theme.of(context).primaryColor);
 
       String createdAt =
           DateFormat.yMd().add_jm().format(DateTime.now()).toString();
@@ -66,9 +64,13 @@ class _AdminLavadoresCreateState extends State<AdminLavadoresCreate> {
       await _lavadorService.create(lavador);
 
       Fluttertoast.showToast(msg: 'Lavador fue creado con éxito');
-      Navigator.pop(context, true);
+
+      Future.delayed(const Duration(seconds: 1), () {
+        //_progressDialog?.close();
+        Navigator.pop(context, true);
+      });
     } catch (error) {
-      //_progressDialog?.close();
+      // _progressDialog?.close();
       Fluttertoast.showToast(msg: 'Ocurrio un error!');
       return;
     }

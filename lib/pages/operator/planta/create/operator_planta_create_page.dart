@@ -1,17 +1,13 @@
 import 'dart:io';
-
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mario_garcia_app/models/business.dart';
-import 'package:flutter_mario_garcia_app/models/control_peso.dart';
 import 'package:flutter_mario_garcia_app/models/lavador.dart';
 import 'package:flutter_mario_garcia_app/models/register_planta.dart';
 import 'package:flutter_mario_garcia_app/models/user.dart';
 import 'package:flutter_mario_garcia_app/providers/user_provider.dart';
 import 'package:flutter_mario_garcia_app/services/business_service.dart';
 import 'package:flutter_mario_garcia_app/services/cloudinary_service.dart';
-import 'package:flutter_mario_garcia_app/services/control_peso_service.dart';
-import 'package:flutter_mario_garcia_app/services/lavador_service.dart';
 import 'package:flutter_mario_garcia_app/services/plantas_service.dart';
 import 'package:flutter_mario_garcia_app/services/register_planta.dart';
 import 'package:flutter_mario_garcia_app/widgets/custom_text.dart';
@@ -178,7 +174,6 @@ class _OperatorPlantaCreatePageState extends State<OperatorPlantaCreatePage> {
         Navigator.pop(context, true);
       });
     } catch (e) {
-      print(e);
       Fluttertoast.showToast(msg: 'Ocurrio un error!');
       return;
     }
